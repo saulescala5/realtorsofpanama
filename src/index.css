@@ -41,3 +41,14 @@
 .hood-pin { @apply flex items-center gap-2 text-[13px] font-medium text-white/90; cursor: pointer; }
 .hood-pin i { @apply block h-2 w-2 rounded-full bg-brand-500; box-shadow: 0 0 0 4px rgba(176,141,69,.25); }
 @media (max-width: 1023px) { .hood-pin span { display: none; } }
+.city-pin { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; background: none; border: 0; }
+.city-pin i { width: 10px; height: 10px; border-radius: 9999px; background: #E3C46E; box-shadow: 0 0 0 6px rgba(227,196,110,.18), 0 0 24px 6px rgba(227,196,110,.45); animation: pinpulse 2.4s ease-in-out infinite; }
+.city-pin span { order: -1; font: 500 12px/1 'Inter Tight', system-ui, sans-serif; padding: 6px 9px; border-radius: 9999px; white-space: nowrap; }
+.city-pin.dark span { color: #fff; background: rgba(0,0,0,.55); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.14); }
+.city-pin.light span { color: #000; background: rgba(255,255,255,.8); backdrop-filter: blur(8px); border: 1px solid rgba(0,0,0,.08); }
+.city-pin.light i { background: #000; box-shadow: 0 0 0 6px rgba(0,0,0,.08); }
+@keyframes pinpulse { 50% { box-shadow: 0 0 0 10px rgba(227,196,110,.06), 0 0 30px 10px rgba(227,196,110,.25); } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lineup { from { opacity: 0; transform: translateY(40%); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes growline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }

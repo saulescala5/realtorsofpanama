@@ -13,6 +13,8 @@ import Contact from './pages/Contact'
 import Network from './pages/Network'
 import { NeighborhoodList, NeighborhoodPage } from './pages/Neighborhoods'
 import Auth from './pages/Auth'
+import Night from './pages/concepts/Night'
+import Day from './pages/concepts/Day'
 import AdminLayout from './pages/admin/AdminLayout'
 import Overview from './pages/admin/Overview'
 import Listings from './pages/admin/Listings'
@@ -40,6 +42,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path="neighborhoods/:slug" element={<NeighborhoodPage />} />
             </Route>
             <Route path="login" element={<Auth />} />
+            <Route path="concepts/a" element={<Night />} />
+            <Route path="concepts/b" element={<Day />} />
             <Route path="admin" element={<AdminLayout />}>
               <Route index element={<Overview />} />
               <Route path="listings" element={<Listings />} />
