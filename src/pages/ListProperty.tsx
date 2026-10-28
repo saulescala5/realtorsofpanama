@@ -176,7 +176,7 @@ export default function ListProperty() {
                     {input('price', `${L.price(sale)} *`, { inputMode: 'numeric', placeholder: sale ? '350,000' : '1,800' })}
                     {input('hoa', L.hoa, { inputMode: 'numeric' })}
                   </div>
-                  {m && <div className="flex items-center gap-4 rounded-2xl bg-brand-100 p-4"><Spot name="chart" size={44} /><p className="text-[14px]"><span className="font-semibold">{L.guide(locationName(f.hood))}:</span> {L.twoBr} {range(m.rent2br)}{t.common.perMonth} · {range(m.saleM2)}{L.perM2}</p></div>}
+                  {m && <div className="flex items-center gap-4 rounded-2xl bg-paper p-4"><Spot name="chart" size={44} /><p className="text-[14px]"><span className="font-semibold">{L.guide(locationName(f.hood))}:</span> {L.twoBr} {range(m.rent2br)}{t.common.perMonth} · {range(m.saleM2)}{L.perM2}</p></div>}
                   {input('avail', L.avail, { type: 'date' })}
                   <div><p className="label">{L.whoAmI}</p>{chips('role', L.roles.map((r, i) => [String(i), r]))}</div>
                   <div className="grid gap-6 sm:grid-cols-2">

@@ -8,7 +8,7 @@ import { GUIDES } from '@/lib/guides'
 import { PropertyCard } from '@/components/PropertyCard'
 import { HeroSearch } from '@/components/HeroSearch'
 import { HoodCards } from '@/components/HoodCards'
-import { ChatDemo } from '@/components/ChatDemo'
+import { HeroCollage } from '@/components/HeroCollage'
 import { Audiences } from '@/components/Audiences'
 import { Spot, WhatsAppIcon, type SpotName } from '@/components/icons'
 import { NeighborhoodMatcher, MortgageCalculator, AlertsForm } from '@/components/Interactive'
@@ -59,7 +59,7 @@ const X = {
 }
 
 const Eyebrow = ({ children, light = false }: { children: string; light?: boolean }) => (
-  <p className={`mb-4 flex items-center gap-2 text-[13px] font-medium uppercase tracking-[.14em] ${light ? 'text-brand-400' : 'text-ink-soft'}`}><span className="h-px w-6 bg-current" />{children}</p>
+  <p className={`mb-4 flex items-center gap-2 text-[13px] font-medium uppercase tracking-[.14em] ${light ? 'text-white/50' : 'text-ink-soft'}`}><span className="h-px w-6 bg-current" />{children}</p>
 )
 
 export default function Home() {
@@ -78,13 +78,12 @@ export default function Home() {
     <>
       {/* hero */}
       <section className="relative overflow-hidden">
-        <div className="aurora" /><div className="grain" />
-        <div className="container-x relative grid items-center gap-14 pb-20 pt-10 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-28">
+                <div className="container-x relative grid items-center gap-14 pb-20 pt-10 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-28">
           <div className="min-w-0">
-            <p className="inline-flex animate-[fadein_.8s_both] items-center gap-2 rounded-full bg-white/70 py-1.5 pl-1.5 pr-4 text-[13px] font-medium ring-1 ring-black/5 backdrop-blur">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-400"><BadgeCheck size={14} /></span>{H.eyebrow}
+            <p className="inline-flex animate-[fadein_.8s_both] items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4 text-[13px] font-medium ring-1 ring-black/5">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ink text-white"><BadgeCheck size={14} /></span>{H.eyebrow}
             </p>
-            <h1 className="font-display mt-6 max-w-[13ch] animate-[lineup_1s_cubic-bezier(.2,.7,.1,1)_both] text-[50px] font-semibold leading-[.95] sm:text-[76px] xl:text-[88px]">{H.h1}</h1>
+            <h1 className="font-display mt-6 max-w-[10ch] animate-[lineup_1s_cubic-bezier(.2,.7,.1,1)_both] text-[56px] font-semibold leading-[.92] sm:text-[84px] xl:text-[104px]">{H.h1.replace(/\.$/, '')}<span className="text-brand-400">.</span></h1>
             <p className="mt-6 max-w-[46ch] animate-[fadein_1s_.4s_both] text-[18px] leading-relaxed text-ink-soft">{H.sub}</p>
             <div className="mt-8 flex animate-[fadein_1s_.55s_both] flex-wrap gap-3">
               <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa btn-lg"><WhatsAppIcon size={19} />{L.startWa}</a>
@@ -95,7 +94,7 @@ export default function Home() {
               {L.trust.map((x) => <li key={x} className="flex items-center gap-2"><Check size={15} className="text-mint-600" />{x}</li>)}
             </ul>
           </div>
-          <div className="animate-[fadein_1.2s_.3s_both]"><ChatDemo /></div>
+          <div className="animate-[fadein_1.2s_.3s_both]"><HeroCollage /></div>
         </div>
       </section>
 
@@ -106,7 +105,7 @@ export default function Home() {
           <h2 className="h-section max-w-[14ch]">{L.howTitle}</h2>
           <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {L.how.map(([icon, title, d], i) => (
-              <li key={title} className="group relative rounded-[28px] bg-paper p-7 transition hover:-translate-y-1 hover:bg-brand-100">
+              <li key={title} className="group relative rounded-[28px] bg-paper p-7 transition hover:-translate-y-1 hover:shadow-lift">
                 <div className="flex items-center justify-between">
                   <Spot name={icon} size={56} />
                   <span className="font-display text-[48px] font-semibold leading-none text-black/10">0{i + 1}</span>
@@ -146,7 +145,6 @@ export default function Home() {
       {/* network */}
       <section className="container-x pb-20 sm:pb-28">
         <div className="relative overflow-hidden rounded-5xl bg-ink p-8 text-white sm:p-14">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand-400/20 blur-3xl" />
           <div className="relative grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-end">
             <div>
               <Eyebrow light>Realtors of Panama</Eyebrow>
@@ -156,7 +154,7 @@ export default function Home() {
             <dl className="grid gap-px overflow-hidden rounded-[28px] bg-white/10 sm:grid-cols-2">
               {L.net.map(([k, v]) => (
                 <div key={k} className="bg-ink p-6">
-                  <dt className="font-display text-[52px] font-semibold leading-none text-brand-400">{k}</dt>
+                  <dt className="font-display text-[52px] font-semibold leading-none">{k}</dt>
                   <dd className="mt-3 text-[14px] leading-snug text-white/65">{v}</dd>
                 </div>
               ))}
@@ -251,11 +249,11 @@ export default function Home() {
 
       {/* professionals */}
       <section className="container-x pb-24">
-        <div className="flex flex-col items-start justify-between gap-8 rounded-5xl bg-brand-100 p-10 sm:p-16 lg:flex-row lg:items-end">
+        <div className="flex flex-col items-start justify-between gap-8 rounded-5xl bg-white p-10 ring-1 ring-black/5 sm:p-16 lg:flex-row lg:items-end">
           <div>
-            <Spot name="handshake" size={64} tone="light" className="mb-6 text-ink [&>path:first-child]:fill-brand-400" />
+            <Spot name="handshake" size={64} className="mb-6" />
             <p className="font-display max-w-[16ch] text-[40px] font-semibold leading-[.98] sm:text-[60px]">{H.proTitle}</p>
-            <p className="mt-5 max-w-[46ch] text-[17px] text-ink/70">{H.proSub}</p>
+            <p className="mt-5 max-w-[46ch] text-[17px] text-ink-soft">{H.proSub}</p>
           </div>
           <Link to="/work-with-us" className="btn-primary btn-lg shrink-0">{H.proCta}<ArrowUpRight size={18} /></Link>
         </div>

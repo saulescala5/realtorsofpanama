@@ -13,8 +13,8 @@ export const en = {
   } as Record<string, string>,
   home: {
     eyebrow: 'Panama’s network of licensed realtors',
-    h1: 'Your home in Panama starts with one message.',
-    sub: 'Tell us what you need on WhatsApp. We connect you with a licensed, verified agent and homes that are really available.',
+    h1: 'Find your place in Panama.',
+    sub: 'We connect you with licensed real estate agents and verified homes. It all starts with a WhatsApp.',
     quick: [['Rent', '/properties?op=rent'], ['Buy', '/properties?op=sale'], ['Publish your property', '/list-your-property'], ['Invest', '/properties?op=sale']],
     mapHint: 'Hover a neighborhood to fly there',
     gets: [['Same-day options', 'Real homes on WhatsApp, not a form reply.'], ['Off-market access', 'What never reaches the portals reaches you.'], ['One advisor', 'From the first visit to the keys, licensed.']],

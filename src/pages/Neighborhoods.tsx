@@ -28,7 +28,7 @@ const C = {
     around: 'Alrededor', gallery: 'Cómo se siente', map: 'Ver en el mapa', hideMap: 'Ocultar mapa', live: 'Vivir aquí', count: (n: number) => `${n} propiedades`,
   },
 }
-const demandDot = { 'very-high': 'bg-rose-500', high: 'bg-brand-500', steady: 'bg-mint-500' }
+const demandDot = { 'very-high': 'bg-rose-500', high: 'bg-amber-500', steady: 'bg-mint-500' }
 
 export function NeighborhoodList() {
   const { t, lang } = useI18n()

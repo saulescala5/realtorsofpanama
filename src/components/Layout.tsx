@@ -98,7 +98,7 @@ export function Footer() {
         <div className="flex flex-col gap-10 border-b border-white/10 pb-16 lg:flex-row lg:items-end lg:justify-between">
           <p className="font-display max-w-[14ch] text-[44px] font-semibold leading-[.95] sm:text-[72px]">{F.cta}</p>
           <div className="flex flex-wrap gap-3">
-            <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-gold btn-lg"><WhatsAppIcon size={18} />{F.ctaWa}</a>
+            <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa btn-lg"><WhatsAppIcon size={18} />{F.ctaWa}</a>
             <Link to="/properties" className="btn-outline-light btn-lg">{F.ctaBrowse}<ArrowUpRight size={18} /></Link>
           </div>
         </div>
@@ -133,7 +133,7 @@ export function PublicLayout() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1"><Outlet /></main>
-      {demo && <div className="bg-brand-100 px-4 py-2 text-center text-xs text-brand-900">{t.common.demo}</div>}
+      {demo && <div className="bg-black/5 px-4 py-2 text-center text-xs text-ink-soft">{t.common.demo}</div>}
       <Footer />
       <a href={waLink('')} target="_blank" rel="noreferrer" aria-label="WhatsApp"
         className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lift transition hover:scale-105">

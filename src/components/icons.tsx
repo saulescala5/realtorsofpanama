@@ -42,8 +42,8 @@ const PATHS: Record<SpotName, { blob: string; line: string }> = {
 }
 
 /** Duotone spot icon. `tone` picks the shape color behind the drawing. */
-export function Spot({ name, size = 48, tone = 'gold', className = '' }: { name: SpotName; size?: number; tone?: 'gold' | 'mint' | 'sky' | 'rose' | 'light'; className?: string }) {
-  const fill = { gold: '#E3C46E', mint: '#9BE3C0', sky: '#B9D7F2', rose: '#F3C3B8', light: 'rgba(255,255,255,.18)' }[tone]
+export function Spot({ name, size = 48, tone = 'gold', className = '' }: { name: SpotName; size?: number; tone?: 'gold' | 'mint' | 'sky' | 'rose' | 'light' | 'accent'; className?: string }) {
+  const fill = { gold: '#E8E7E2', mint: '#E8E7E2', sky: '#E8E7E2', rose: '#E8E7E2', light: 'rgba(255,255,255,.16)', accent: '#E3C46E' }[tone]
   const p = PATHS[name]
   return (
     <svg viewBox="0 0 48 48" width={size} height={size} aria-hidden className={className}>

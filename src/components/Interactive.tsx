@@ -80,7 +80,7 @@ export function NeighborhoodMatcher() {
             {results.map(({ n }, i) => (
               <li key={n.slug}>
                 <Link to={`/properties?op=${op}&area=${n.slug}`} className="group flex items-center gap-5 rounded-3xl bg-paper p-5 transition hover:bg-black/5">
-                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[15px] font-medium ${i === 0 ? 'bg-brand-400' : 'bg-white'}`}>{i + 1}</span>
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[15px] font-medium ${i === 0 ? 'bg-ink text-white' : 'bg-white'}`}>{i + 1}</span>
                   <span className="min-w-0 flex-1"><span className="font-display block text-[28px] font-semibold leading-none">{n.name}</span><span className="mt-1.5 block truncate text-[14px] text-ink-soft">{tr(n.tagline, lang)}</span></span>
                   <span className="hidden shrink-0 items-center gap-1 text-[14px] sm:flex">{C.see}<ArrowUpRight size={16} className="transition group-hover:rotate-45" /></span>
                 </Link>
@@ -161,20 +161,20 @@ export function AlertsForm() {
     setState(ok ? 'ok' : 'err')
   }
   return (
-    <div className="flex h-full flex-col rounded-5xl bg-brand-400 p-6 sm:p-10">
-      <Bell size={26} />
+    <div className="flex h-full flex-col rounded-5xl bg-ink p-6 text-white sm:p-10">
+      <span className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/10"><Bell size={22} /><i className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-brand-400" /></span>
       <h2 className="h-sub mt-6 max-w-[12ch]">{C.title}</h2>
-      <p className="mt-3 max-w-[40ch] text-[16px]">{C.sub}</p>
-      {state === 'ok' ? <p className="mt-8 flex items-center gap-3 rounded-3xl bg-white/60 p-5 text-[17px]"><Check size={20} />{C.done}</p> : (
+      <p className="mt-3 max-w-[40ch] text-[16px] text-white/60">{C.sub}</p>
+      {state === 'ok' ? <p className="mt-8 flex items-center gap-3 rounded-3xl bg-white/10 p-5 text-[17px]"><Check size={20} />{C.done}</p> : (
         <form onSubmit={submit} className="mt-8 grid gap-3 sm:grid-cols-2">
-          <input className="input bg-white/80" placeholder={C.name} aria-label={C.name} required maxLength={120} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
-          <input className="input bg-white/80" placeholder={C.phone} aria-label={C.phone} required maxLength={40} inputMode="tel" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
-          <select className="input bg-white/80" aria-label={C.op} value={f.op} onChange={(e) => setF({ ...f, op: e.target.value })}><option value="rent">{C.rent}</option><option value="sale">{C.buy}</option></select>
-          <select className="input bg-white/80" aria-label={C.area} value={f.area} onChange={(e) => setF({ ...f, area: e.target.value })}>
+          <input className="input bg-white" placeholder={C.name} aria-label={C.name} required maxLength={120} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />
+          <input className="input bg-white" placeholder={C.phone} aria-label={C.phone} required maxLength={40} inputMode="tel" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
+          <select className="input bg-white" aria-label={C.op} value={f.op} onChange={(e) => setF({ ...f, op: e.target.value })}><option value="rent">{C.rent}</option><option value="sale">{C.buy}</option></select>
+          <select className="input bg-white" aria-label={C.area} value={f.area} onChange={(e) => setF({ ...f, area: e.target.value })}>
             <option value="">{C.anyArea}</option>{NEIGHBORHOODS.filter((n) => n.featured).map((n) => <option key={n.slug} value={n.slug}>{n.name}</option>)}
           </select>
-          <input className="input bg-white/80 sm:col-span-2" placeholder={C.budget} aria-label={C.budget} inputMode="numeric" value={f.budget} onChange={(e) => setF({ ...f, budget: e.target.value.replace(/[^\d]/g, '') })} />
-          <button disabled={state === 'busy'} className="btn-primary sm:col-span-2">{C.submit}</button>
+          <input className="input bg-white sm:col-span-2" placeholder={C.budget} aria-label={C.budget} inputMode="numeric" value={f.budget} onChange={(e) => setF({ ...f, budget: e.target.value.replace(/[^\d]/g, '') })} />
+          <button disabled={state === 'busy'} className="btn sm:col-span-2 bg-white text-ink hover:bg-white/90">{C.submit}</button>
         </form>
       )}
     </div>

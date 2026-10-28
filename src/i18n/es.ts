@@ -15,8 +15,8 @@ export const es: Dict = {
   },
   home: {
     eyebrow: 'La red de corredores con licencia de Panamá',
-    h1: 'Tu hogar en Panamá empieza con un mensaje.',
-    sub: 'Cuéntanos qué necesitas por WhatsApp. Te conectamos con un agente con licencia verificado y con propiedades realmente disponibles.',
+    h1: 'Encuentra tu lugar en Panamá.',
+    sub: 'Te conectamos con agentes inmobiliarios con licencia y propiedades verificadas. Todo empieza con un WhatsApp.',
     quick: [['Alquilar', '/properties?op=rent'], ['Comprar', '/properties?op=sale'], ['Publica tu propiedad', '/list-your-property'], ['Invertir', '/properties?op=sale']],
     mapHint: 'Pasa sobre una zona para ir allí',
     gets: [['Opciones el mismo día', 'Propiedades reales por WhatsApp, no una respuesta automática.'], ['Fuera del mercado', 'Lo que nunca llega a los portales, te llega a ti.'], ['Un solo asesor', 'De la primera visita a las llaves, con licencia.']],
