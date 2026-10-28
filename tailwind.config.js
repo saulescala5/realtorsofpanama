@@ -4,29 +4,31 @@ export default {
   theme: {
     extend: {
       colors: {
+        // brass gold: 500 for fills/lines, 700 for text on white (AA contrast)
         brand: {
-          50: '#EEF6FF', 100: '#D9ECFF', 200: '#B5D9FF', 300: '#80BEFF', 400: '#3D9BFF',
-          500: '#0A84FF', 600: '#0570F2', 700: '#065BC7', 800: '#0B4C9C', 900: '#0E3F7D',
+          50: '#F8F4EA', 100: '#F0E7D2', 200: '#E2D0A6', 300: '#D1B77D', 400: '#C2A25E',
+          500: '#B08D45', 600: '#957536', 700: '#7A6029', 800: '#5E4920', 900: '#3F3116',
         },
-        ink: { DEFAULT: '#0B1220', soft: '#475467', mute: '#98A2B3' },
-        mint: { 400: '#3DDC97', 500: '#18C47C', 600: '#0FA568' },
-        sun: { 400: '#FFC24B', 500: '#FFB020' },
-        line: '#E9EEF5',
-        canvas: '#F6F8FB',
+        ink: { DEFAULT: '#000000', soft: '#5B5A57', mute: '#8F8D88' },
+        mint: { 400: '#3DDC97', 500: '#1FAF68', 600: '#178A52' },
+        sun: { 400: '#E2D0A6', 500: '#C2A25E' },
+        line: '#E4E2DD',
+        canvas: '#F3F2EF',
+        night: { DEFAULT: '#000000', 800: '#141413', 700: '#22211F', line: '#2E2D2A' },
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['Jost', 'system-ui', 'sans-serif'],
+        display: ['"Bodoni Moda"', 'Georgia', 'serif'],
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(16,24,40,.04), 0 8px 24px -8px rgba(16,24,40,.08)',
-        lift: '0 2px 4px rgba(16,24,40,.04), 0 24px 48px -16px rgba(10,132,255,.25)',
+        soft: '0 1px 2px rgba(0,0,0,.04)',
+        lift: '0 18px 40px -20px rgba(0,0,0,.35)',
       },
       borderRadius: { '4xl': '2rem' },
       keyframes: {
-        rise: { '0%': { opacity: 0, transform: 'translateY(8px)' }, '100%': { opacity: 1, transform: 'none' } },
-        typing: { '0%,80%,100%': { opacity: .25 }, '40%': { opacity: 1 } },
+        rise: { '0%': { opacity: 0, transform: 'translateY(6px)' }, '100%': { opacity: 1, transform: 'none' } },
       },
-      animation: { rise: 'rise .5s ease-out both', typing: 'typing 1.2s infinite' },
+      animation: { rise: 'rise .45s ease-out both' },
     },
   },
   plugins: [],

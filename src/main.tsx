@@ -10,6 +10,8 @@ import Explore from './pages/Explore'
 import PropertyDetail from './pages/PropertyDetail'
 import ListProperty from './pages/ListProperty'
 import Contact from './pages/Contact'
+import Network from './pages/Network'
+import { NeighborhoodList, NeighborhoodPage } from './pages/Neighborhoods'
 import Auth from './pages/Auth'
 import AdminLayout from './pages/admin/AdminLayout'
 import Overview from './pages/admin/Overview'
@@ -33,6 +35,9 @@ createRoot(document.getElementById('root')!).render(
               <Route path="p/:id" element={<OldLink />} />
               <Route path="list-your-property" element={<ListProperty />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="work-with-us" element={<Network />} />
+              <Route path="neighborhoods" element={<NeighborhoodList />} />
+              <Route path="neighborhoods/:slug" element={<NeighborhoodPage />} />
             </Route>
             <Route path="login" element={<Auth />} />
             <Route path="admin" element={<AdminLayout />}>

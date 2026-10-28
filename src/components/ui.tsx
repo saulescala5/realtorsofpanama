@@ -11,12 +11,12 @@ export function Logo({ white = false, to = '/' }: { white?: boolean; to?: string
   )
 }
 
-const FALLBACK = 'linear-gradient(135deg,#D9ECFF 0%,#EEF6FF 50%,#B5D9FF 100%)'
+const FALLBACK = 'linear-gradient(160deg,#F3F2EF 0%,#E9E7E1 100%)'
 
 /** Image with a branded gradient fallback when the remote file is missing. */
 export function Img({ className = '', ...rest }: ImgHTMLAttributes<HTMLImageElement>) {
   const [broken, setBroken] = useState(false)
-  if (broken || !rest.src) return <div className={`${className} flex items-center justify-center`} style={{ background: FALLBACK }}><Building2 className="h-10 w-10 text-brand-300" /></div>
+  if (broken || !rest.src) return <div className={`${className} flex items-center justify-center`} style={{ background: FALLBACK }}><Building2 className="h-9 w-9 text-ink/15" strokeWidth={1.25} /></div>
   return <img loading="lazy" {...rest} className={`${className} object-cover`} onError={() => setBroken(true)} />
 }
 

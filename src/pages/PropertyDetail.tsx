@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Bath, BedDouble, Car, Maximize, MapPin, MessageCircle, Share2, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useI18n } from '@/i18n'
@@ -8,6 +8,10 @@ import { locationName } from '@/lib/locations'
 import { waLink } from '@/lib/whatsapp'
 import { PropertyCard, titleOf } from '@/components/PropertyCard'
 import { Img, Toast, useToast } from '@/components/ui'
+import { hood, tr } from '@/lib/neighborhoods'
+import { coordsOf, shortPrice } from '@/lib/geo'
+
+const MapView = lazy(() => import('@/components/MapView'))
 
 export default function PropertyDetail() {
   const { id } = useParams()
@@ -39,6 +43,8 @@ export default function PropertyDetail() {
   const ref = p.id.slice(0, 6).toUpperCase()
   const wa = waLink(`${t.property.waText(title, url)} (${t.property.ref} ${ref})`)
   const n = p.images.length
+  const coords = coordsOf(p)
+  const area = hood(p.location)
   const similar = store.publicProperties.filter((x) => x.id !== p.id && x.operation === p.operation)
     .sort((a, b) => Number(b.location === p.location) - Number(a.location === p.location)).slice(0, 4)
 
@@ -74,7 +80,7 @@ export default function PropertyDetail() {
       <button onClick={() => nav(-1)} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-soft hover:text-ink"><ArrowLeft size={16} />{t.common.back}</button>
 
       {/* gallery */}
-      <div className="relative overflow-hidden rounded-[28px] bg-canvas">
+      <div className="relative overflow-hidden rounded-[3px] bg-canvas">
         <Img src={p.images[img]} alt={title} className="aspect-[4/3] w-full sm:aspect-[16/8]" />
         {n > 1 && <>
           <button onClick={() => setImg((img - 1 + n) % n)} className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow" aria-label="Previous"><ChevronLeft size={20} /></button>
@@ -85,7 +91,7 @@ export default function PropertyDetail() {
       {n > 1 && (
         <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto">
           {p.images.map((src, i) => (
-            <button key={src + i} onClick={() => setImg(i)} className={`h-16 w-24 shrink-0 overflow-hidden rounded-xl ring-2 ${i === img ? 'ring-brand-500' : 'ring-transparent opacity-80'}`}>
+            <button key={src + i} onClick={() => setImg(i)} className={`h-16 w-24 shrink-0 overflow-hidden rounded-[3px] ring-2 ${i === img ? 'ring-ink' : 'ring-transparent opacity-70'}`}>
               <Img src={src} alt="" className="h-full w-full" />
             </button>
           ))}
@@ -101,58 +107,64 @@ export default function PropertyDetail() {
                 <span className="chip bg-canvas text-ink-soft">{t.types[p.type]}</span>
                 <span className="chip bg-canvas text-ink-mute">{t.property.ref} {ref}</span>
               </div>
-              <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1>
+              <h1 className="mt-4 font-display text-[36px] font-medium leading-[1.08] sm:text-[48px]">{title}</h1>
               <p className="mt-2 flex items-center gap-1.5 text-ink-soft"><MapPin size={16} />{[p.address, locationName(p.location), p.city].filter(Boolean).join(', ')}</p>
             </div>
             <button onClick={share} className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-ink-soft ring-1 ring-line hover:bg-canvas hover:text-ink" aria-label={t.property.share} title={t.property.share}><Share2 size={17} /></button>
           </div>
-          <p className="mt-5 text-3xl font-extrabold text-brand-600">{money(p.price, lang)}{p.operation === 'rent' && <span className="text-base font-semibold text-ink-soft">{t.common.perMonth}</span>}</p>
+          <p className="mt-5 text-[28px] font-medium text-ink">{money(p.price, lang)}{p.operation === 'rent' && <span className="text-base font-semibold text-ink-soft">{t.common.perMonth}</span>}</p>
 
           {facts.length > 0 && <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {facts.map(({ icon: Icon, v, l }) => (
-              <div key={l} className="rounded-2xl bg-canvas p-4">
-                <Icon size={20} className="text-brand-500" />
-                <p className="mt-2 text-xl font-extrabold">{v}</p>
-                <p className="text-xs font-semibold uppercase tracking-wide text-ink-mute">{l}</p>
+              <div key={l} className="border-t border-ink pt-3">
+                <Icon size={20} className="text-brand-600" />
+                <p className="mt-2 font-display text-[26px]">{v}</p>
+                <p className="text-[13px] text-ink-soft">{l}</p>
               </div>
             ))}
           </div>}
 
-          {p.videoUrl && <video src={p.videoUrl} poster={p.videoPosterUrl} controls playsInline className="mt-8 max-h-[560px] w-full rounded-3xl bg-ink" />}
+          {p.videoUrl && <video src={p.videoUrl} poster={p.videoPosterUrl} controls playsInline className="mt-10 max-h-[620px] w-full bg-ink" />}
 
           {description && <>
-            <h2 className="mt-10 text-xl font-extrabold">{t.property.about}</h2>
+            <h2 className="mt-10 font-display text-[26px] font-medium">{t.property.about}</h2>
             <p className="mt-3 max-w-2xl whitespace-pre-line leading-relaxed text-ink-soft">{description}</p>
           </>}
 
           {details.length > 0 && <>
-            <h2 className="mt-10 text-xl font-extrabold">{t.property.details}</h2>
+            <h2 className="mt-10 font-display text-[26px] font-medium">{t.property.details}</h2>
             <dl className="mt-4 grid max-w-xl grid-cols-2 gap-x-6 gap-y-3 text-sm">
               {details.map(([k, v]) => <div key={k}><dt className="text-ink-mute">{k}</dt><dd className="font-semibold">{v}</dd></div>)}
             </dl>
           </>}
 
           {(p.amenities.length > 0 || p.features.length > 0) && <>
-            <h2 className="mt-10 text-xl font-extrabold">{t.property.amenities}</h2>
+            <h2 className="mt-10 font-display text-[26px] font-medium">{t.property.amenities}</h2>
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[...p.amenities.map((a) => t.amenities[a] ?? a), ...p.features].map((a) => (
                 <div key={a} className="flex items-center gap-2.5 text-sm font-medium">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600"><Check size={14} strokeWidth={3} /></span>{a}
+                  <Check size={16} className="shrink-0 text-brand-600" />{a}
                 </div>
               ))}
             </div>
           </>}
 
-          {p.latitude && p.longitude && <>
-            <h2 className="mt-10 text-xl font-extrabold">{t.property.location}</h2>
-            <iframe title="map" loading="lazy" className="mt-4 h-72 w-full rounded-3xl ring-1 ring-line"
-              src={`https://www.openstreetmap.org/export/embed.html?bbox=${p.longitude - 0.008},${p.latitude - 0.005},${p.longitude + 0.008},${p.latitude + 0.005}&layer=mapnik&marker=${p.latitude},${p.longitude}`} />
+          {coords && <>
+            <h2 className="mt-12 font-display text-[26px] font-medium">{t.property.location}</h2>
+            <div className="mt-4 h-80 overflow-hidden rounded-[3px] ring-1 ring-line">
+              <Suspense fallback={<div className="h-full bg-canvas" />}><MapView points={[{ id: p.id, ...coords, label: shortPrice(p) }]} /></Suspense>
+            </div>
           </>}
+          {area?.about && <div className="mt-12 border-t border-line pt-8">
+            <h2 className="font-display text-[26px] font-medium">{t.property.neighborhood}</h2>
+            <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{tr(area.about, lang)}</p>
+            <Link to={`/neighborhoods/${area.slug}`} className="link mt-4 inline-block">{t.hoods.guide}</Link>
+          </div>}
         </div>
 
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="card p-6">
-            <p className="text-lg font-extrabold">{t.property.contactTitle}</p>
+          <div className="bg-canvas p-6">
+            <p className="font-display text-[26px]">{t.property.contactTitle}</p>
             <p className="mt-1 text-sm text-ink-soft">{t.property.contactSub}</p>
             <a href={wa} target="_blank" rel="noreferrer" className="btn-wa mt-5 w-full"><MessageCircle size={18} />{t.property.whatsapp}</a>
             {sent === 'ok' ? <p className="mt-4 rounded-xl bg-mint-400/15 px-4 py-3 text-sm font-semibold text-mint-600">{t.property.sent}</p>
@@ -172,7 +184,7 @@ export default function PropertyDetail() {
 
       {similar.length > 0 && (
         <section className="mt-20">
-          <h2 className="text-2xl font-extrabold tracking-tight">{t.property.similar}</h2>
+          <h2 className="h-sub">{t.property.similar}</h2>
           <div className="mt-6 grid gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">{similar.map((s) => <PropertyCard key={s.id} p={s} />)}</div>
         </section>
       )}
