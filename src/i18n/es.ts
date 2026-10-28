@@ -1,7 +1,7 @@
 import type { Dict } from './en'
 
 export const es: Dict = {
-  nav: { properties: 'Propiedades', rent: 'Alquilar', buy: 'Comprar', neighborhoods: 'Zonas', list: 'Vende o alquila', network: 'Trabaja con nosotros', contact: 'Contacto', admin: 'Admin', login: 'Entrar', logout: 'Salir', whatsapp: 'WhatsApp' },
+  nav: { properties: 'Propiedades', rent: 'Alquilar', buy: 'Comprar', neighborhoods: 'Zonas', list: 'Publica tu propiedad', network: 'Trabaja con nosotros', contact: 'Contacto', admin: 'Admin', login: 'Entrar', logout: 'Salir', whatsapp: 'WhatsApp' },
   common: {
     sale: 'En venta', rent: 'En alquiler', perMonth: '/mes', beds: 'Rec.', baths: 'Baños', area: 'm²', parking: 'Estac.',
     any: 'Cualquiera', all: 'Todas', back: 'Volver', save: 'Guardar', cancel: 'Cancelar', delete: 'Eliminar', edit: 'Editar', view: 'Ver', featured: 'Destacada',
@@ -14,9 +14,10 @@ export const es: Dict = {
     storage: 'Depósito', terrace: 'Terraza / balcón', ac: 'Aire acondicionado', socialArea: 'Área social', playground: 'Área infantil', generator: 'Planta eléctrica',
   },
   home: {
-    h1: 'Bienes raíces, sin ruido.',
-    sub: 'Dinos qué buscas. Recibe las propiedades correctas en Ciudad de Panamá, publicadas o no, el mismo día.',
-    quick: [['Alquilar', '/properties?op=rent'], ['Comprar', '/properties?op=sale'], ['Vender o alquilar', '/list-your-property'], ['Invertir', '/properties?op=sale']],
+    eyebrow: 'La red de corredores con licencia de Panamá',
+    h1: 'Tu hogar en Panamá empieza con un mensaje.',
+    sub: 'Cuéntanos qué necesitas por WhatsApp. Te conectamos con un agente con licencia verificado y con propiedades realmente disponibles.',
+    quick: [['Alquilar', '/properties?op=rent'], ['Comprar', '/properties?op=sale'], ['Publica tu propiedad', '/list-your-property'], ['Invertir', '/properties?op=sale']],
     mapHint: 'Pasa sobre una zona para ir allí',
     gets: [['Opciones el mismo día', 'Propiedades reales por WhatsApp, no una respuesta automática.'], ['Fuera del mercado', 'Lo que nunca llega a los portales, te llega a ti.'], ['Un solo asesor', 'De la primera visita a las llaves, con licencia.']],
     now: 'Disponible ahora', all: 'Ver todo', nowEmpty: 'Cada semana entran propiedades nuevas, y muchas de las mejores se comparten primero en privado.', nowAsk: 'Dinos qué buscas',
@@ -27,7 +28,7 @@ export const es: Dict = {
     services: [
       ['Alquilar', 'Apartamentos y casas en toda la ciudad, amoblados o no.', '/properties?op=rent'],
       ['Comprar', 'Reventa y preventa, con una lectura honesta antes de decidir.', '/properties?op=sale'],
-      ['Vender o alquilar', 'Fotos, video, precio y clientes calificados.', '/list-your-property'],
+      ['Publica tu propiedad', 'Fotos, video, precio y clientes calificados.', '/list-your-property'],
       ['Invertir', 'Hacia dónde va la demanda y qué se alquila bien.', '/properties?op=sale'],
       ['Reubicación', 'Vivienda para ejecutivos y familias que llegan a Panamá.', '/contact'],
     ],
@@ -41,9 +42,9 @@ export const es: Dict = {
       ['¿Muestran propiedades que no están en línea?', 'Sí. Muchas de las mejores se comparten en privado entre propietarios y agentes antes de publicarse. También te enviamos esas.'],
       ['¿Qué zonas cubren?', 'Toda la Ciudad de Panamá, de Punta Pacífica y Costa del Este a Casco Viejo, Clayton y Panamá Pacífico, y playa o montaña a pedido.'],
       ['¿Me ayudan a comprar desde el extranjero?', 'Sí. Hacemos recorridos por video, revisamos el edificio y los papeles y coordinamos con tu abogado y tu banco para que decidas con confianza.'],
-      ['¿Cómo empiezo?', 'Envíanos un WhatsApp con lo que buscas. Uno de nuestros asesores te responde el mismo día.'],
+      ['¿Cómo empiezo?', 'Envíanos un WhatsApp con lo que buscas. Nuestro asistente responde al instante y un agente con licencia sigue contigo.'],
     ],
-    proTitle: '¿Trabajas en bienes raíces? Hagámoslo juntos.', proSub: 'Brokers, desarrolladores, propietarios y empresas trabajan con nosotros para llegar a clientes serios.', proCta: 'Trabaja con nosotros',
+    proTitle: '¿Corredor con licencia en Panamá? Únete a la red.', proSub: 'Cualquier profesional inmobiliario con licencia vigente en Panamá puede aplicar. Desarrolladores, propietarios y empresas también son bienvenidos.', proCta: 'Trabaja con nosotros',
   },
   explore: {
     title: 'Propiedades en Panamá', subtitle: 'Propiedades para alquilar y comprar en toda la ciudad.', searchPh: 'Zona, edificio o palabra clave',
@@ -83,7 +84,7 @@ export const es: Dict = {
   },
   list: {
     eyebrow: 'Para propietarios',
-    title: 'Vende o alquila tu propiedad con nosotros',
+    title: 'Publica tu propiedad',
     sub: 'Envíanos lo básico. Visitamos, tomamos fotos y video profesionales y la mostramos a clientes calificados que ya tenemos.',
     steps: ['Cuéntanos de la propiedad', 'La visitamos y acordamos condiciones', 'Fotos, video y promoción', 'Visitas calificadas hasta cerrar'],
     name: 'Tu nombre', phone: 'WhatsApp / teléfono', operation: 'Quiero', sell: 'Vender', rentOut: 'Alquilar',
@@ -92,7 +93,7 @@ export const es: Dict = {
     waText: '¡Hola! Quiero publicar mi propiedad con Realtors of Panama.',
   },
   contact: { title: 'Contacto', sub: 'La forma más rápida de contactarnos es WhatsApp.', office: 'Oficina', email: 'Correo' },
-  footer: { tagline: 'Corredora de bienes raíces con licencia en Ciudad de Panamá.', rights: 'Todos los derechos reservados.', explore: 'Explorar', company: 'Empresa', neighborhoods: 'Zonas', map: 'Buscar en el mapa', cta: 'Dinos qué buscas.', ctaWa: 'Escríbenos por WhatsApp', ctaBrowse: 'Ver propiedades' },
+  footer: { tagline: 'La red de profesionales inmobiliarios con licencia de Panamá.', rights: 'Todos los derechos reservados.', explore: 'Explorar', company: 'Empresa', neighborhoods: 'Zonas', map: 'Buscar en el mapa', cta: 'Dinos qué buscas.', ctaWa: 'Escríbenos por WhatsApp', ctaBrowse: 'Ver propiedades' },
   login: { title: 'Acceso admin', email: 'Correo', password: 'Contraseña', submit: 'Entrar', notAdmin: 'Esta cuenta no tiene acceso de administrador.', demo: 'Modo vista previa: cualquier correo y contraseña funciona.' },
   admin: {
     nav: { overview: 'Resumen', listings: 'Propiedades', clients: 'Clientes', site: 'Ver sitio' },

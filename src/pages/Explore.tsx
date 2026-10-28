@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
+import { WhatsAppIcon } from '@/components/icons'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { MessageCircle, Map as MapIcon, List } from 'lucide-react'
+import { Map as MapIcon, List } from 'lucide-react'
 import { SmartSearch } from '@/components/SmartSearch'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
@@ -26,6 +27,7 @@ export default function Explore() {
   const area = params.get('area') ?? ''
   const max = Number(params.get('max') ?? 0)
   const beds = Number(params.get('beds') ?? 0)
+  const baths = Number(params.get('baths') ?? 0)
   const sort = params.get('sort') ?? 'new'
 
   const set = (k: string, v: string) => {
@@ -43,8 +45,9 @@ export default function Explore() {
       .filter((p) => !area || p.location === area)
       .filter((p) => !max || p.price <= max)
       .filter((p) => !beds || p.beds >= beds)
+      .filter((p) => !baths || p.baths >= baths)
       .sort((a, b) => sort === 'low' ? a.price - b.price : sort === 'high' ? b.price - a.price : Number(b.featured) - Number(a.featured) || b.createdAt.localeCompare(a.createdAt))
-  }, [properties, q, op, type, area, max, beds, sort])
+  }, [properties, q, op, type, area, max, beds, baths, sort])
 
   const pins = useMemo(() => list.flatMap((p) => { const c = coordsOf(p); return c ? [{ id: p.id, ...c, label: shortPrice(p) }] : [] }), [list])
   const prices = op === 'sale' ? [150000, 250000, 400000, 600000, 1000000] : op === 'rent' ? [1000, 1500, 2000, 3000, 5000] : [1500, 3000, 250000, 500000, 1000000]
@@ -76,6 +79,10 @@ export default function Explore() {
                 <option value="">{t.explore.beds}</option>
                 {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+</option>)}
               </select>
+              <select className={select} value={baths || ''} onChange={(e) => set('baths', e.target.value)} aria-label={t.common.baths}>
+                <option value="">{t.common.baths}</option>
+                {[1, 2, 3, 4].map((n) => <option key={n} value={n}>{n}+</option>)}
+              </select>
               <select className={select} value={max || ''} onChange={(e) => set('max', e.target.value)} aria-label={t.explore.maxPrice}>
                 <option value="">{t.explore.maxPrice}</option>
                 {prices.map((n) => <option key={n} value={n}>${n.toLocaleString()}</option>)}
@@ -101,7 +108,7 @@ export default function Explore() {
             <div className="rounded-[28px] bg-white p-8 ring-1 ring-black/5">
               <p className="max-w-[48ch] text-[17px]">{t.explore.none}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa"><MessageCircle size={16} />{t.explore.askWa}</a>
+                <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa"><WhatsAppIcon size={16} />{t.explore.askWa}</a>
                 <button className="btn-ghost" onClick={() => setParams({})}>{t.explore.clear}</button>
               </div>
             </div>

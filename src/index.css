@@ -28,7 +28,7 @@
   .label { @apply mb-1.5 block text-[13px] font-medium text-ink-soft; }
   .eyebrow { @apply text-[14px] font-medium text-ink-soft; }
   .chip { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium; }
-  .h-display { @apply font-display text-[52px] font-semibold leading-[.95] sm:text-[88px] lg:text-[120px]; }
+  .h-display { @apply font-display text-[52px] font-semibold leading-[.95] sm:text-[76px] lg:text-[96px]; }
   .h-section { @apply font-display text-[40px] font-semibold leading-[.98] sm:text-[60px]; }
   .h-sub { @apply font-display text-[30px] font-semibold leading-none sm:text-[40px]; }
   .link { @apply font-medium text-ink underline decoration-black/20 underline-offset-4 hover:decoration-black; }
@@ -54,3 +54,13 @@
 @keyframes growline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .city3d .maplibregl-ctrl-bottom-right { top: 8px; bottom: auto; }
+@keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(6%,4%) scale(1.08); } }
+@keyframes float2 { 0%,100% { transform: translate(0,0) scale(1.05); } 50% { transform: translate(-5%,-3%) scale(.95); } }
+.aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.aurora::before, .aurora::after { content: ''; position: absolute; border-radius: 9999px; filter: blur(70px); }
+.aurora::before { width: 60vw; height: 60vw; max-width: 900px; max-height: 900px; left: -10%; top: -20%; background: radial-gradient(circle, rgba(227,196,110,.35), rgba(227,196,110,0) 65%); animation: float1 18s ease-in-out infinite; }
+.aurora::after { width: 55vw; height: 55vw; max-width: 820px; max-height: 820px; right: -12%; top: 5%; background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,0) 60%); animation: float2 22s ease-in-out infinite; }
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: .35; background-image: radial-gradient(rgba(0,0,0,.06) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
+@keyframes chatin { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes blink { 0%,100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; } }

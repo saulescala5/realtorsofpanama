@@ -37,6 +37,8 @@ export interface Property {
   images: string[]
   status: ListingStatus
   featured: boolean
+  /** Sample/mock listing: badge on the site, never offered by Sofia. */
+  sample?: boolean
   views: number
   createdAt: string
   updatedAt: string

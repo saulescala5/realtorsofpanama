@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { WhatsAppIcon } from '@/components/icons'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Bath, BedDouble, Car, Maximize, MapPin, MessageCircle, Share2, Check, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Bath, BedDouble, Car, Maximize, MapPin, Share2, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { money } from '@/lib/format'
@@ -10,6 +11,7 @@ import { PropertyCard, titleOf } from '@/components/PropertyCard'
 import { Img, Toast, useToast } from '@/components/ui'
 import { hood, tr } from '@/lib/neighborhoods'
 import { coordsOf, shortPrice } from '@/lib/geo'
+import { useSeo, SITE_URL } from '@/lib/seo'
 
 const MapView = lazy(() => import('@/components/MapView'))
 
@@ -28,6 +30,17 @@ export default function PropertyDetail() {
   const [sent, setSent] = useState<'ok' | 'err' | null>(null)
 
   useEffect(() => { if (id && !store.user) store.viewProperty(id); setImg(0) }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+  useSeo(p ? {
+    title: `${titleOf(p, lang)} · ${locationName(p.location)} · Realtors of Panama`,
+    description: ((lang === 'es' && p.descriptionEs) || p.description).slice(0, 160),
+    image: p.images[0],
+    jsonLd: {
+      '@context': 'https://schema.org', '@type': 'RealEstateListing', name: titleOf(p, lang), url: `${SITE_URL}/property/${p.id}`,
+      description: (lang === 'es' && p.descriptionEs) || p.description, image: p.images.map((i) => (i.startsWith('http') ? i : SITE_URL + i)), datePosted: p.createdAt,
+      offers: { '@type': 'Offer', price: p.price, priceCurrency: 'USD', businessFunction: p.operation === 'rent' ? 'http://purl.org/goodrelations/v1#LeaseOut' : 'http://purl.org/goodrelations/v1#Sell', availability: 'https://schema.org/InStock', seller: { '@type': 'RealEstateAgent', name: 'Realtors of Panama' } },
+      about: { '@type': p.type === 'house' ? 'SingleFamilyResidence' : 'Apartment', numberOfRooms: p.beds || undefined, numberOfBathroomsTotal: p.baths || undefined, floorSize: p.area ? { '@type': 'QuantitativeValue', value: p.area, unitCode: 'MTK' } : undefined, address: { '@type': 'PostalAddress', addressLocality: locationName(p.location), addressRegion: p.city, addressCountry: 'PA' } },
+    },
+  } : { title: 'Realtors of Panama' })
 
   if (!store.ready) return <div className="container-x py-24 text-center text-ink-soft">{t.common.loading}</div>
   if (!p) return (
@@ -166,7 +179,7 @@ export default function PropertyDetail() {
           <div className="rounded-[28px] bg-white p-6 ring-1 ring-black/5">
             <p className="font-display text-[32px] font-semibold leading-none">{t.property.contactTitle}</p>
             <p className="mt-1 text-sm text-ink-soft">{t.property.contactSub}</p>
-            <a href={wa} target="_blank" rel="noreferrer" className="btn-wa mt-5 w-full"><MessageCircle size={18} />{t.property.whatsapp}</a>
+            <a href={wa} target="_blank" rel="noreferrer" className="btn-wa mt-5 w-full"><WhatsAppIcon size={18} />{t.property.whatsapp}</a>
             {sent === 'ok' ? <p className="mt-4 rounded-xl bg-mint-400/15 px-4 py-3 text-sm font-semibold text-mint-600">{t.property.sent}</p>
               : !form ? <button onClick={() => setForm(true)} className="mt-3 w-full text-center text-sm font-semibold text-ink-soft hover:text-ink">{t.property.or}</button>
               : (

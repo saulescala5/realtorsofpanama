@@ -11,7 +11,7 @@ export function Logo({ white = false, to = '/' }: { white?: boolean; to?: string
   )
 }
 
-const FALLBACK = 'linear-gradient(160deg,#F3F2EF 0%,#E9E7E1 100%)'
+const FALLBACK = 'linear-gradient(150deg,#EFEDE8 0%,#E4E1D9 55%,#EAE3D0 100%)'
 
 /** Image with a branded gradient fallback when the remote file is missing. */
 export function Img({ className = '', ...rest }: ImgHTMLAttributes<HTMLImageElement>) {

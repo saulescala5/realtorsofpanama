@@ -1,5 +1,5 @@
 export const en = {
-  nav: { properties: 'Properties', rent: 'Rent', buy: 'Buy', neighborhoods: 'Neighborhoods', list: 'Sell or rent out', network: 'Work with us', contact: 'Contact', admin: 'Admin', login: 'Sign in', logout: 'Sign out', whatsapp: 'WhatsApp' },
+  nav: { properties: 'Properties', rent: 'Rent', buy: 'Buy', neighborhoods: 'Neighborhoods', list: 'Publish your property', network: 'Work with us', contact: 'Contact', admin: 'Admin', login: 'Sign in', logout: 'Sign out', whatsapp: 'WhatsApp' },
   common: {
     sale: 'For sale', rent: 'For rent', perMonth: '/mo', beds: 'Beds', baths: 'Baths', area: 'm²', parking: 'Parking',
     any: 'Any', all: 'All', back: 'Back', save: 'Save', cancel: 'Cancel', delete: 'Delete', edit: 'Edit', view: 'View', featured: 'Featured',
@@ -12,9 +12,10 @@ export const en = {
     storage: 'Storage', terrace: 'Terrace / balcony', ac: 'Air conditioning', socialArea: 'Social area', playground: 'Kids area', generator: 'Power backup',
   } as Record<string, string>,
   home: {
-    h1: 'Real estate, minus the noise.',
-    sub: 'Tell us what you want. Get the right homes in Panama City, published or not, the same day.',
-    quick: [['Rent', '/properties?op=rent'], ['Buy', '/properties?op=sale'], ['Sell or rent out', '/list-your-property'], ['Invest', '/properties?op=sale']],
+    eyebrow: 'Panama’s network of licensed realtors',
+    h1: 'Your home in Panama starts with one message.',
+    sub: 'Tell us what you need on WhatsApp. We connect you with a licensed, verified agent and homes that are really available.',
+    quick: [['Rent', '/properties?op=rent'], ['Buy', '/properties?op=sale'], ['Publish your property', '/list-your-property'], ['Invest', '/properties?op=sale']],
     mapHint: 'Hover a neighborhood to fly there',
     gets: [['Same-day options', 'Real homes on WhatsApp, not a form reply.'], ['Off-market access', 'What never reaches the portals reaches you.'], ['One advisor', 'From the first visit to the keys, licensed.']],
     now: 'Available now', all: 'See everything', nowEmpty: 'New homes are added every week, and most of the best ones are shared privately first.', nowAsk: 'Tell us what you want',
@@ -25,23 +26,23 @@ export const en = {
     services: [
       ['Rent', 'Apartments and houses across the city, furnished or not.', '/properties?op=rent'],
       ['Buy', 'Resale and pre-construction, with an honest read before you commit.', '/properties?op=sale'],
-      ['Sell or rent out', 'Photos, video, pricing and qualified clients.', '/list-your-property'],
+      ['Publish your property', 'Photos, video, pricing and qualified clients.', '/list-your-property'],
       ['Invest', 'Where demand is moving and what rents well.', '/properties?op=sale'],
       ['Relocate', 'Homes for executives and families arriving in Panama.', '/contact'],
     ],
     ownersTitle: 'Own in Panama City? We already have the client.',
     ownersSub: 'People ask us every day for homes we don’t have yet. Yours could be next.',
     ownersPoints: ['Professional photos and video', 'Priced on what’s actually closing', 'Shown to qualified clients only', 'You approve every step'],
-    ownersCta: 'List your property',
+    ownersCta: 'Publish your property',
     faqTitle: 'Questions people ask us',
     faq: [
       ['Can I rent if I just arrived in Panama?', 'Yes. Landlords usually ask for your passport, proof of income and a deposit plus the first month. We tell you exactly what each one needs before you visit.'],
       ['Do you show homes that aren’t online?', 'Yes. Many of the best homes are shared privately between owners and agents before they are ever published. We send you those too.'],
       ['Which neighborhoods do you cover?', 'All of Panama City, from Punta Pacífica and Costa del Este to Casco Viejo, Clayton and Panamá Pacífico, plus beach and mountain areas on request.'],
       ['Can you help me buy from abroad?', 'Yes. We do video tours, check the building and paperwork, and coordinate with your lawyer and bank so you can decide with confidence.'],
-      ['How do I start?', 'Send us a WhatsApp with what you’re looking for. One of our advisors answers the same day.'],
+      ['How do I start?', 'Send us a WhatsApp with what you’re looking for. Our assistant answers right away and a licensed agent takes it from there.'],
     ],
-    proTitle: 'In real estate? Let’s work together.', proSub: 'Brokers, developers, owners and companies work with us to reach serious clients.', proCta: 'Work with us',
+    proTitle: 'Licensed realtor in Panama? Join the network.', proSub: 'Any real estate professional legally licensed in Panama can apply. Developers, owners and companies are welcome too.', proCta: 'Work with us',
   },
   explore: {
     title: 'Properties in Panama', subtitle: 'Homes to rent and buy across the city.', searchPh: 'Neighborhood, building or keyword',
@@ -81,7 +82,7 @@ export const en = {
   },
   list: {
     eyebrow: 'For owners',
-    title: 'Sell or rent out your property with us',
+    title: 'Publish your property',
     sub: 'Send us the basics. We visit, take professional photos and video, and show it to qualified clients we already have.',
     steps: ['Tell us about the property', 'We visit and agree terms with you', 'Photos, video and promotion', 'Qualified visits until it closes'],
     name: 'Your name', phone: 'WhatsApp / phone', operation: 'I want to', sell: 'Sell', rentOut: 'Rent it out',
@@ -90,7 +91,7 @@ export const en = {
     waText: 'Hi! I want to list my property with Realtors of Panama.',
   },
   contact: { title: 'Contact', sub: 'The fastest way to reach us is WhatsApp.', office: 'Office', email: 'Email' },
-  footer: { tagline: 'Licensed real estate brokerage in Panama City.', rights: 'All rights reserved.', explore: 'Explore', company: 'Company', neighborhoods: 'Neighborhoods', map: 'Map search', cta: 'Tell us what you want.', ctaWa: 'Message us on WhatsApp', ctaBrowse: 'Browse homes' },
+  footer: { tagline: 'Panama’s network of licensed real estate professionals.', rights: 'All rights reserved.', explore: 'Explore', company: 'Company', neighborhoods: 'Neighborhoods', map: 'Map search', cta: 'Tell us what you want.', ctaWa: 'Message us on WhatsApp', ctaBrowse: 'Browse homes' },
   login: { title: 'Admin sign in', email: 'Email', password: 'Password', submit: 'Sign in', notAdmin: 'This account has no admin access.', demo: 'Preview mode: any email and password works.' },
   admin: {
     nav: { overview: 'Overview', listings: 'Listings', clients: 'Clients', site: 'View site' },

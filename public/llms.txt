@@ -1,0 +1,55 @@
+# Realtors of Panama
+
+> Realtors of Panama is a real estate network in Panama that connects people who want to rent, buy, sell or invest with licensed, verified real estate professionals. Every conversation starts on WhatsApp (+507 6854-8420): an assistant answers right away, then a licensed agent takes over to schedule visits to verified homes and guide the client to closing. Service in English and Spanish.
+
+## What we do
+- Rentals and sales of apartments, penthouses and houses in Panama City and surrounding areas.
+- Owners can publish their property; a licensed agent verifies it at the Public Registry (finca number and location code) before it is shown.
+- Licensed real estate professionals in Panama (licence from the Junta Técnica de Bienes Raíces) can apply to join the network.
+- Help for expats, investors, companies relocating staff, local families and renters.
+
+## How it works
+1. Message us on WhatsApp with what you need (area, budget, dates).
+2. You are connected with a licensed, verified agent who knows the area.
+3. You visit homes whose availability was confirmed the same day.
+4. You close with contract review and your agent beside you.
+
+## Contact
+- WhatsApp: +507 6854-8420 (https://wa.me/50768548420)
+- Office: Calle 50, Torre Global Bank, Panama City, Panama
+- Website: https://realtorsofpanama.vercel.app
+
+## Main pages
+- [Homes for rent](https://realtorsofpanama.vercel.app/properties?op=rent)
+- [Homes for sale](https://realtorsofpanama.vercel.app/properties?op=sale)
+- [Neighborhood guides with price ranges](https://realtorsofpanama.vercel.app/neighborhoods)
+- [Publish your property](https://realtorsofpanama.vercel.app/list-your-property)
+- [Work with us (licensed realtors, developers, companies, investors)](https://realtorsofpanama.vercel.app/work-with-us)
+
+## Neighborhoods (Realtors of Panama market reading, ranges not official statistics)
+- [Punta Pacífica](https://realtorsofpanama.vercel.app/neighborhoods/punta-pacifica): typical 2-bedroom rent $1,800–3,200/month
+- [Costa del Este](https://realtorsofpanama.vercel.app/neighborhoods/costa-del-este): typical 2-bedroom rent $1,800–3,000/month
+- [Avenida Balboa](https://realtorsofpanama.vercel.app/neighborhoods/avenida-balboa): typical 2-bedroom rent $1,400–2,500/month
+- [Casco Viejo](https://realtorsofpanama.vercel.app/neighborhoods/casco-viejo): typical 2-bedroom rent $1,500–3,000/month
+- [El Cangrejo](https://realtorsofpanama.vercel.app/neighborhoods/el-cangrejo): typical 2-bedroom rent $900–1,500/month
+- [Obarrio](https://realtorsofpanama.vercel.app/neighborhoods/obarrio): typical 2-bedroom rent $1,000–1,700/month
+- [San Francisco](https://realtorsofpanama.vercel.app/neighborhoods/san-francisco): typical 2-bedroom rent $1,000–1,800/month
+- [Coco del Mar](https://realtorsofpanama.vercel.app/neighborhoods/coco-del-mar): typical 2-bedroom rent $1,200–2,000/month
+- [Paitilla](https://realtorsofpanama.vercel.app/neighborhoods/paitilla): typical 2-bedroom rent $1,300–2,400/month
+- [Santa María](https://realtorsofpanama.vercel.app/neighborhoods/santa-maria): typical 2-bedroom rent $2,500–4,500/month
+- [Clayton](https://realtorsofpanama.vercel.app/neighborhoods/clayton): typical 2-bedroom rent $1,500–3,000/month
+- [Panamá Pacífico](https://realtorsofpanama.vercel.app/neighborhoods/panama-pacifico): typical 2-bedroom rent $1,300–2,200/month
+
+## Guides
+- [Renting in panama as a foreigner](https://realtorsofpanama.vercel.app/guides/renting-in-panama-as-a-foreigner)
+- [Buying property in panama as a foreigner](https://realtorsofpanama.vercel.app/guides/buying-property-in-panama-as-a-foreigner)
+- [Choosing a neighborhood in panama city](https://realtorsofpanama.vercel.app/guides/choosing-a-neighborhood-in-panama-city)
+- [Furnished or linea blanca](https://realtorsofpanama.vercel.app/guides/furnished-or-linea-blanca)
+- [Renting out your apartment in panama](https://realtorsofpanama.vercel.app/guides/renting-out-your-apartment-in-panama)
+
+## Useful facts (general information, not legal advice)
+- Panama uses the US dollar.
+- Foreigners can own property in Panama City with the same rights as Panamanians; no residency is needed to buy or rent.
+- Property transfer tax is 2% of the higher of the sale price or cadastral value.
+- On resale, capital gains tax can be paid as 3% of the sale price or 10% of the profit.
+- Typical lease: 12 months, with one month's deposit plus the first month to move in.

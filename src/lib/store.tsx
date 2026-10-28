@@ -27,6 +27,7 @@ interface Store {
   saveProperty: (p: PropertyInput) => Promise<Property>
   setStatus: (id: string, status: ListingStatus) => Promise<void>
   deleteProperty: (id: string) => Promise<void>
+  deleteSamples: () => Promise<number>
   getSource: (propertyId: string) => Promise<PropertySource | null>
   saveSource: (s: PropertySource) => Promise<void>
   findBySourceCode: (code: string) => Promise<string | null>
@@ -51,7 +52,7 @@ const toProperty = (r: Row): Property => ({
   hoa: r.hoa ?? undefined, deposit: r.deposit ?? undefined, availableDate: r.available_date ?? undefined,
   videoUrl: r.video_url ?? undefined, videoPosterUrl: r.video_poster_url ?? undefined,
   images: ((r.property_images ?? []) as Row[]).sort((a, b) => a.display_order - b.display_order).map((i) => i.image_url),
-  status: r.status, featured: !!r.featured, views: r.views ?? 0, createdAt: r.created_at, updatedAt: r.updated_at,
+  status: r.status, featured: !!r.featured, sample: !!r.is_sample, views: r.views ?? 0, createdAt: r.created_at, updatedAt: r.updated_at,
 })
 
 const fromProperty = (p: PropertyInput): Row => ({
@@ -76,7 +77,7 @@ const toLead = (r: Row): Lead => ({
 const PROP_SELECT = '*, property_images(image_url, display_order)'
 
 // ---------------------------------------------------------------- demo persistence
-const DEMO_KEY = 'rop:demo:v1'
+const DEMO_KEY = 'rop:demo:v2'
 type DemoState = { properties: Property[]; leads: Lead[]; sources: Record<string, PropertySource>; signedIn: boolean }
 const loadDemo = (): DemoState => {
   try { const raw = localStorage.getItem(DEMO_KEY); if (raw) return JSON.parse(raw) } catch { /* ignore */ }
@@ -173,6 +174,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       deleteProperty: async (id) => {
         if (demo) { setD((s) => ({ ...s, properties: s.properties.filter((p) => p.id !== id) })); return }
         await sb!.from('properties').delete().eq('id', id); await refresh()
+      },
+      deleteSamples: async () => {
+        if (demo) { const n = d.properties.filter((p) => p.sample).length; setD((s) => ({ ...s, properties: s.properties.filter((p) => !p.sample) })); return n }
+        const { data } = await sb!.from('properties').delete().eq('is_sample', true).select('id')
+        await refresh(); return data?.length ?? 0
       },
       getSource: async (pid) => {
         if (demo) return d.sources[pid] ?? null

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { WhatsAppIcon } from './icons'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Menu, X, MessageCircle, ArrowUpRight, Mail, MapPin } from 'lucide-react'
+import { Menu, X, ArrowUpRight, MapPin, Heart } from 'lucide-react'
+import { useSaved } from '@/lib/saved'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { waLink } from '@/lib/whatsapp'
@@ -19,7 +21,8 @@ export function LangToggle({ dark = false }: { dark?: boolean }) {
 }
 
 export function Navbar() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const saved = useSaved()
   const { user } = useStore()
   const { pathname, search } = useLocation()
   const [open, setOpen] = useState(false)
@@ -37,6 +40,7 @@ export function Navbar() {
     { to: '/properties?op=rent', label: t.nav.rent },
     { to: '/properties?op=sale', label: t.nav.buy },
     { to: '/neighborhoods', label: t.nav.neighborhoods },
+    { to: '/guides', label: lang === 'es' ? 'Guías' : 'Guides' },
     { to: '/list-your-property', label: t.nav.list },
     { to: '/work-with-us', label: t.nav.network },
   ]
@@ -52,8 +56,11 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-1.5">
           <LangToggle />
+          <Link to="/saved" aria-label={lang === 'es' ? 'Guardadas' : 'Saved homes'} className="relative flex h-10 w-10 items-center justify-center rounded-full hover:bg-black/5">
+            <Heart size={19} />{saved.ids.length > 0 && <span className="absolute right-0.5 top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-ink px-1 text-[10px] text-white">{saved.ids.length}</span>}
+          </Link>
           {user && <Link to="/admin" className="hidden h-10 items-center rounded-full px-3 text-[14px] text-ink-soft hover:text-ink sm:flex">{t.nav.admin}</Link>}
-          <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-primary btn-sm hidden sm:inline-flex"><MessageCircle size={16} />WhatsApp</a>
+          <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa btn-sm hidden sm:inline-flex"><WhatsAppIcon size={16} />WhatsApp</a>
           <button className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-black/5 xl:hidden" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}>
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -67,7 +74,7 @@ export function Navbar() {
             ))}
             {user && <Link to="/admin" className="font-display py-3 text-[44px] font-semibold leading-none text-ink-soft">{t.nav.admin}</Link>}
           </nav>
-          <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-primary btn-lg mt-8 w-full"><MessageCircle size={18} />WhatsApp +507 6854-8420</a>
+          <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa btn-lg mt-8 w-full"><WhatsAppIcon size={18} />WhatsApp +507 6854-8420</a>
         </div>
       )}
     </header>
@@ -91,19 +98,18 @@ export function Footer() {
         <div className="flex flex-col gap-10 border-b border-white/10 pb-16 lg:flex-row lg:items-end lg:justify-between">
           <p className="font-display max-w-[14ch] text-[44px] font-semibold leading-[.95] sm:text-[72px]">{F.cta}</p>
           <div className="flex flex-wrap gap-3">
-            <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-gold btn-lg"><MessageCircle size={18} />{F.ctaWa}</a>
+            <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-gold btn-lg"><WhatsAppIcon size={18} />{F.ctaWa}</a>
             <Link to="/properties" className="btn-outline-light btn-lg">{F.ctaBrowse}<ArrowUpRight size={18} /></Link>
           </div>
         </div>
 
         <div className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div className="space-y-4 text-[15px] text-white/80">
-            <a href={waLink('')} target="_blank" rel="noreferrer" className="flex items-center gap-3 hover:text-white"><MessageCircle size={17} className="text-brand-400" />+507 6854-8420</a>
-            <a href="mailto:escala.saul@gmail.com" className="flex items-center gap-3 hover:text-white"><Mail size={17} className="text-brand-400" />escala.saul@gmail.com</a>
-            <p className="flex items-start gap-3"><MapPin size={17} className="mt-1 shrink-0 text-brand-400" />Calle 50, Torre Global Bank, Piso 15<br />Panama City</p>
+            <a href={waLink('')} target="_blank" rel="noreferrer" className="flex items-center gap-3 hover:text-white"><WhatsAppIcon size={17} className="text-mint-400" />+507 6854-8420</a>
+            <p className="flex items-start gap-3"><MapPin size={17} className="mt-1 shrink-0 text-brand-400" />Calle 50, Torre Global Bank<br />Panama City, Panama</p>
             <p className="pt-2 text-[14px] text-white/50">{F.tagline}</p>
           </div>
-          {col(F.explore, [['/properties?op=rent', t.nav.rent], ['/properties?op=sale', t.nav.buy], ['/properties', F.map], ['/neighborhoods', t.nav.neighborhoods]])}
+          {col(F.explore, [['/properties?op=rent', t.nav.rent], ['/properties?op=sale', t.nav.buy], ['/properties', F.map], ['/neighborhoods', t.nav.neighborhoods], ['/guides', lang === 'es' ? 'Guías' : 'Guides'], ['/saved', lang === 'es' ? 'Guardadas' : 'Saved homes']])}
           {col(F.neighborhoods, NEIGHBORHOODS.filter((n) => n.featured).slice(0, 6).map((n) => [`/neighborhoods/${n.slug}`, n.name]))}
           {col(F.company, [['/list-your-property', t.nav.list], ['/work-with-us', t.nav.network], ['/contact', t.nav.contact], ['/login', t.nav.admin]])}
         </div>
@@ -130,8 +136,8 @@ export function PublicLayout() {
       {demo && <div className="bg-brand-100 px-4 py-2 text-center text-xs text-brand-900">{t.common.demo}</div>}
       <Footer />
       <a href={waLink('')} target="_blank" rel="noreferrer" aria-label="WhatsApp"
-        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-mint-500 text-white shadow-lift sm:hidden">
-        <MessageCircle size={26} />
+        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lift transition hover:scale-105">
+        <WhatsAppIcon size={28} />
       </a>
     </div>
   )

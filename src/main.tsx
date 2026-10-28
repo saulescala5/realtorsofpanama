@@ -11,6 +11,8 @@ import PropertyDetail from './pages/PropertyDetail'
 import ListProperty from './pages/ListProperty'
 import Contact from './pages/Contact'
 import Network from './pages/Network'
+import Saved from './pages/Saved'
+import { GuideList, GuidePage } from './pages/Guides'
 import { NeighborhoodList, NeighborhoodPage } from './pages/Neighborhoods'
 import Auth from './pages/Auth'
 import AdminLayout from './pages/admin/AdminLayout'
@@ -36,6 +38,9 @@ createRoot(document.getElementById('root')!).render(
               <Route path="list-your-property" element={<ListProperty />} />
               <Route path="contact" element={<Contact />} />
               <Route path="work-with-us" element={<Network />} />
+              <Route path="guides" element={<GuideList />} />
+              <Route path="guides/:slug" element={<GuidePage />} />
+              <Route path="saved" element={<Saved />} />
               <Route path="neighborhoods" element={<NeighborhoodList />} />
               <Route path="neighborhoods/:slug" element={<NeighborhoodPage />} />
             </Route>
