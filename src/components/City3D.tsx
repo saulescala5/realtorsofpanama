@@ -87,5 +87,5 @@ export default function City3D({ theme = 'dark', points = [], focus, rotate = tr
     return () => window.clearTimeout(t)
   }, [focus?.lat, focus?.lng]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <div ref={box} className={`h-full w-full ${className}`} aria-hidden />
+  return <div ref={box} className={`city3d h-full w-full ${className}`} aria-hidden />
 }

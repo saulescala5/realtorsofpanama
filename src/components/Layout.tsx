@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Menu, X, MessageCircle } from 'lucide-react'
+import { Menu, X, MessageCircle, ArrowUpRight, Mail, MapPin } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { waLink } from '@/lib/whatsapp'
+import { NEIGHBORHOODS } from '@/lib/neighborhoods'
 import { Logo } from './ui'
 
 export function LangToggle({ dark = false }: { dark?: boolean }) {
   const { lang, setLang } = useI18n()
   return (
     <button onClick={() => setLang(lang === 'en' ? 'es' : 'en')}
-      className={`h-9 px-2 text-[13px] font-medium transition ${dark ? 'text-white/70 hover:text-white' : 'text-ink-soft hover:text-ink'}`}
+      className={`h-10 rounded-full px-3 text-[14px] transition ${dark ? 'text-white/70 hover:text-white' : 'text-ink-soft hover:text-ink'}`}
       aria-label={lang === 'en' ? 'Cambiar a español' : 'Switch to English'}>
       {lang === 'en' ? 'Español' : 'English'}
     </button>
@@ -23,14 +24,14 @@ export function Navbar() {
   const { pathname, search } = useLocation()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const overHero = pathname === '/' && !scrolled && !open
 
   useEffect(() => setOpen(false), [pathname, search])
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 40)
+    const on = () => setScrolled(window.scrollY > 8)
     on(); window.addEventListener('scroll', on, { passive: true })
     return () => window.removeEventListener('scroll', on)
   }, [])
+  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [open])
 
   const links = [
     { to: '/properties?op=rent', label: t.nav.rent },
@@ -39,31 +40,34 @@ export function Navbar() {
     { to: '/list-your-property', label: t.nav.list },
     { to: '/work-with-us', label: t.nav.network },
   ]
-  const tone = overHero ? 'text-white/80 hover:text-white' : 'text-ink-soft hover:text-ink'
 
   return (
-    <header className={`${pathname === '/' ? 'fixed' : 'sticky'} inset-x-0 top-0 z-40 transition-colors duration-300 ${overHero ? 'bg-transparent' : 'bg-white/95 backdrop-blur border-b border-line'}`}>
-      <div className="container-x flex h-[72px] items-center justify-between gap-6">
-        <Logo white={overHero} />
-        <nav className="hidden items-center gap-7 xl:flex">
-          {links.map((l) => <NavLink key={l.to} to={l.to} className={`text-[14px] font-medium transition ${tone}`}>{l.label}</NavLink>)}
+    <header className={`sticky top-0 z-40 transition ${scrolled || open ? 'bg-paper/85 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,.06)]' : 'bg-paper'}`}>
+      <div className="container-x flex h-20 items-center justify-between gap-6">
+        <Logo />
+        <nav className="hidden items-center gap-8 xl:flex">
+          {links.map((l) => (
+            <NavLink key={l.to} to={l.to} className={({ isActive }) => `text-[14px] transition ${isActive && !l.to.includes('?') ? 'text-ink' : 'text-ink-soft hover:text-ink'}`}>{l.label}</NavLink>
+          ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <LangToggle dark={overHero} />
-          {user && <Link to="/admin" className={`hidden px-2 text-[13px] font-medium sm:block ${tone}`}>{t.nav.admin}</Link>}
-          <a href={waLink('')} target="_blank" rel="noreferrer" className={`btn-sm hidden sm:inline-flex ${overHero ? 'btn-gold' : 'btn-primary'}`}><MessageCircle size={15} />{t.nav.whatsapp}</a>
-          <button className={`flex h-10 w-10 items-center justify-center xl:hidden ${overHero ? 'text-white' : 'text-ink'}`} onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}>
+        <div className="flex items-center gap-1.5">
+          <LangToggle />
+          {user && <Link to="/admin" className="hidden h-10 items-center rounded-full px-3 text-[14px] text-ink-soft hover:text-ink sm:flex">{t.nav.admin}</Link>}
+          <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-primary btn-sm hidden sm:inline-flex"><MessageCircle size={16} />WhatsApp</a>
+          <button className="flex h-10 w-10 items-center justify-center rounded-full hover:bg-black/5 xl:hidden" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}>
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
       {open && (
-        <div className="container-x border-t border-line bg-white pb-6 xl:hidden">
-          <div className="flex flex-col pt-2">
-            {links.map((l) => <Link key={l.to} to={l.to} className="border-b border-line py-4 font-display text-xl">{l.label}</Link>)}
-            {user && <Link to="/admin" className="border-b border-line py-4 font-display text-xl">{t.nav.admin}</Link>}
-            <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-primary mt-5"><MessageCircle size={16} />WhatsApp +507 6854-8420</a>
-          </div>
+        <div className="container-x h-[calc(100svh-5rem)] overflow-y-auto pb-10 xl:hidden">
+          <nav className="flex flex-col pt-4">
+            {links.map((l, i) => (
+              <Link key={l.to} to={l.to} className="font-display animate-rise py-3 text-[44px] font-semibold leading-none" style={{ animationDelay: `${i * 40}ms` }}>{l.label}</Link>
+            ))}
+            {user && <Link to="/admin" className="font-display py-3 text-[44px] font-semibold leading-none text-ink-soft">{t.nav.admin}</Link>}
+          </nav>
+          <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-primary btn-lg mt-8 w-full"><MessageCircle size={18} />WhatsApp +507 6854-8420</a>
         </div>
       )}
     </header>
@@ -71,34 +75,45 @@ export function Navbar() {
 }
 
 export function Footer() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const F = t.footer
+  const col = (title: string, items: [string, string][]) => (
+    <div>
+      <p className="text-[13px] text-white/40">{title}</p>
+      <ul className="mt-4 space-y-2.5 text-[15px] text-white/80">
+        {items.map(([to, label]) => <li key={to + label}><Link to={to} className="transition hover:text-white">{label}</Link></li>)}
+      </ul>
+    </div>
+  )
   return (
-    <footer className="bg-night text-white">
-      <div className="container-x grid gap-12 py-16 md:grid-cols-[1.6fr_1fr_1fr]">
-        <div>
-          <Logo white />
-          <p className="mt-5 max-w-xs text-[14px] text-white/60">{t.footer.tagline}</p>
-          <a href={waLink('')} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-[15px] text-brand-300 hover:text-brand-200"><MessageCircle size={16} />+507 6854-8420</a>
+    <footer className="bg-ink text-white">
+      <div className="container-x pt-20 sm:pt-28">
+        <div className="flex flex-col gap-10 border-b border-white/10 pb-16 lg:flex-row lg:items-end lg:justify-between">
+          <p className="font-display max-w-[14ch] text-[44px] font-semibold leading-[.95] sm:text-[72px]">{F.cta}</p>
+          <div className="flex flex-wrap gap-3">
+            <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-gold btn-lg"><MessageCircle size={18} />{F.ctaWa}</a>
+            <Link to="/properties" className="btn-outline-light btn-lg">{F.ctaBrowse}<ArrowUpRight size={18} /></Link>
+          </div>
         </div>
-        <div>
-          <p className="mb-4 text-[13px] text-white/40">{t.footer.explore}</p>
-          <ul className="space-y-2.5 text-[14px] text-white/75">
-            <li><Link to="/properties?op=rent" className="hover:text-white">{t.nav.rent}</Link></li>
-            <li><Link to="/properties?op=sale" className="hover:text-white">{t.nav.buy}</Link></li>
-            <li><Link to="/neighborhoods" className="hover:text-white">{t.nav.neighborhoods}</Link></li>
-          </ul>
+
+        <div className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+          <div className="space-y-4 text-[15px] text-white/80">
+            <a href={waLink('')} target="_blank" rel="noreferrer" className="flex items-center gap-3 hover:text-white"><MessageCircle size={17} className="text-brand-400" />+507 6854-8420</a>
+            <a href="mailto:escala.saul@gmail.com" className="flex items-center gap-3 hover:text-white"><Mail size={17} className="text-brand-400" />escala.saul@gmail.com</a>
+            <p className="flex items-start gap-3"><MapPin size={17} className="mt-1 shrink-0 text-brand-400" />Calle 50, Torre Global Bank, Piso 15<br />Panama City</p>
+            <p className="pt-2 text-[14px] text-white/50">{F.tagline}</p>
+          </div>
+          {col(F.explore, [['/properties?op=rent', t.nav.rent], ['/properties?op=sale', t.nav.buy], ['/properties', F.map], ['/neighborhoods', t.nav.neighborhoods]])}
+          {col(F.neighborhoods, NEIGHBORHOODS.filter((n) => n.featured).slice(0, 6).map((n) => [`/neighborhoods/${n.slug}`, n.name]))}
+          {col(F.company, [['/list-your-property', t.nav.list], ['/work-with-us', t.nav.network], ['/contact', t.nav.contact], ['/login', t.nav.admin]])}
         </div>
-        <div>
-          <p className="mb-4 text-[13px] text-white/40">{t.footer.company}</p>
-          <ul className="space-y-2.5 text-[14px] text-white/75">
-            <li><Link to="/list-your-property" className="hover:text-white">{t.nav.list}</Link></li>
-            <li><Link to="/work-with-us" className="hover:text-white">{t.nav.network}</Link></li>
-            <li><Link to="/contact" className="hover:text-white">{t.nav.contact}</Link></li>
-            <li><Link to="/login" className="hover:text-white">{t.nav.admin}</Link></li>
-          </ul>
+
+        <img src="/brand/logo-white.png" alt="" aria-hidden className="w-full select-none opacity-[.07]" draggable={false} />
+        <div className="flex flex-wrap items-center justify-between gap-4 py-8 text-[13px] text-white/40">
+          <span>© {new Date().getFullYear()} Realtors of Panama. {F.rights}</span>
+          <span>{lang === 'es' ? 'Hecho en Panamá' : 'Made in Panama'}</span>
         </div>
       </div>
-      <div className="container-x border-t border-night-line py-6 text-xs text-white/40">© {new Date().getFullYear()} Realtors of Panama. {t.footer.rights}</div>
     </footer>
   )
 }
@@ -112,7 +127,7 @@ export function PublicLayout() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1"><Outlet /></main>
-      {demo && <div className="bg-brand-100 px-4 py-2 text-center text-xs font-medium text-brand-900">{t.common.demo}</div>}
+      {demo && <div className="bg-brand-100 px-4 py-2 text-center text-xs text-brand-900">{t.common.demo}</div>}
       <Footer />
       <a href={waLink('')} target="_blank" rel="noreferrer" aria-label="WhatsApp"
         className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-mint-500 text-white shadow-lift sm:hidden">

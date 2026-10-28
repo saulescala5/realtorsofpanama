@@ -26,21 +26,20 @@ export default function ListProperty() {
   return (
     <div className="container-x grid gap-12 py-14 lg:grid-cols-[1fr_440px]">
       <div>
-        <p className="eyebrow">{L.eyebrow}</p>
-        <h1 className="h-section mt-3 max-w-xl">{L.title}</h1>
-        <p className="mt-4 max-w-xl text-lg text-ink-soft">{L.sub}</p>
+                <h1 className="h-display max-w-[11ch]">{L.title}</h1>
+        <p className="mt-6 max-w-[48ch] text-[18px] text-ink-soft">{L.sub}</p>
         <ol className="mt-8 space-y-4">
           {L.steps.map((s, i) => (
             <li key={s} className="flex items-center gap-4">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-extrabold text-white">{i + 1}</span>
-              <span className="font-semibold">{s}</span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-[15px] font-medium text-white">{i + 1}</span>
+              <span className="text-[18px]">{s}</span>
             </li>
           ))}
         </ol>
         <a href={waLink(L.waText)} target="_blank" rel="noreferrer" className="btn-wa mt-10"><MessageCircle size={17} />{L.orWa}</a>
       </div>
 
-      <div className="card p-6 sm:p-7">
+      <div className="card p-6 sm:p-8 lg:self-start">
         {state === 'ok' ? <p className="rounded-xl bg-mint-400/15 px-4 py-6 text-center font-semibold text-mint-600">{L.done}</p> : (
           <form onSubmit={submit} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -49,9 +48,9 @@ export default function ListProperty() {
             </div>
             <div>
               <label className="label">{L.operation}</label>
-              <div className="flex gap-1 rounded-xl bg-canvas p-1 ring-1 ring-line">
+              <div className="flex gap-1 rounded-full bg-paper p-1 ring-1 ring-black/10">
                 {([['rent_out', L.rentOut], ['sell', L.sell]] as const).map(([v, l]) => (
-                  <button key={v} type="button" onClick={() => set('op', v)} className={`h-9 flex-1 rounded-lg text-sm font-semibold ${f.op === v ? 'bg-white shadow-sm' : 'text-ink-soft'}`}>{l}</button>
+                  <button key={v} type="button" onClick={() => set('op', v)} className={`h-10 flex-1 rounded-full text-[14px] font-medium ${f.op === v ? 'bg-white shadow-sm' : 'text-ink-soft'}`}>{l}</button>
                 ))}
               </div>
             </div>

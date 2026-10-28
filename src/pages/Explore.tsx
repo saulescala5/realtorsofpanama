@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Search, MessageCircle, Map as MapIcon, List } from 'lucide-react'
+import { MessageCircle, Map as MapIcon, List } from 'lucide-react'
+import { SmartSearch } from '@/components/SmartSearch'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { PropertyCard } from '@/components/PropertyCard'
@@ -47,21 +48,18 @@ export default function Explore() {
 
   const pins = useMemo(() => list.flatMap((p) => { const c = coordsOf(p); return c ? [{ id: p.id, ...c, label: shortPrice(p) }] : [] }), [list])
   const prices = op === 'sale' ? [150000, 250000, 400000, 600000, 1000000] : op === 'rent' ? [1000, 1500, 2000, 3000, 5000] : [1500, 3000, 250000, 500000, 1000000]
-  const select = 'h-10 shrink-0 rounded-[3px] bg-white px-3 pr-8 text-[14px] text-ink ring-1 ring-inset ring-line outline-none focus:ring-brand-500'
-  const seg = (a: boolean) => `h-10 px-4 text-[14px] font-medium transition ${a ? 'bg-ink text-white' : 'bg-white text-ink-soft hover:text-ink'}`
+  const select = 'h-11 shrink-0 rounded-full bg-white px-4 pr-9 text-[14px] text-ink ring-1 ring-inset ring-black/10 outline-none focus:ring-black'
+  const seg = (a: boolean) => `h-9 rounded-full px-4 text-[14px] font-medium transition ${a ? 'bg-ink text-white' : 'text-ink-soft hover:text-ink'}`
 
   return (
     <div>
-      <div className="border-b border-line">
+      <div className="border-b border-black/10">
         <div className="container-x py-8">
-          <h1 className="font-display text-[36px] leading-tight sm:text-[44px]">{t.explore.title}</h1>
+          <h1 className="h-sub">{t.explore.title}</h1>
+          <div className="mt-6 max-w-[680px]"><SmartSearch dark={false} /></div>
           <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center">
-            <label className="flex h-10 flex-1 items-center gap-2 rounded-[3px] px-3 ring-1 ring-inset ring-line focus-within:ring-2 focus-within:ring-brand-500 lg:max-w-xs">
-              <Search size={16} className="text-ink-mute" />
-              <input value={q} onChange={(e) => set('q', e.target.value)} placeholder={t.explore.searchPh} className="h-full flex-1 bg-transparent text-[14px] outline-none" aria-label={t.explore.searchPh} />
-            </label>
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
-              <div className="flex shrink-0 overflow-hidden rounded-[3px] ring-1 ring-inset ring-line">
+              <div className="flex shrink-0 gap-0.5 rounded-full bg-white p-1 ring-1 ring-inset ring-black/10">
                 <button className={seg(!op)} onClick={() => set('op', '')}>{t.common.all}</button>
                 <button className={seg(op === 'rent')} onClick={() => set('op', 'rent')}>{t.nav.rent}</button>
                 <button className={seg(op === 'sale')} onClick={() => set('op', 'sale')}>{t.nav.buy}</button>
@@ -100,7 +98,7 @@ export default function Explore() {
               {list.map((p) => <PropertyCard key={p.id} p={p} onHover={setHover} />)}
             </div>
           ) : (
-            <div className="border-t border-line py-12">
+            <div className="rounded-[28px] bg-white p-8 ring-1 ring-black/5">
               <p className="max-w-[48ch] text-[17px]">{t.explore.none}</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa"><MessageCircle size={16} />{t.explore.askWa}</a>

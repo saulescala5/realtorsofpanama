@@ -80,7 +80,7 @@ export default function PropertyDetail() {
       <button onClick={() => nav(-1)} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-soft hover:text-ink"><ArrowLeft size={16} />{t.common.back}</button>
 
       {/* gallery */}
-      <div className="relative overflow-hidden rounded-[3px] bg-canvas">
+      <div className="relative overflow-hidden rounded-5xl bg-white">
         <Img src={p.images[img]} alt={title} className="aspect-[4/3] w-full sm:aspect-[16/8]" />
         {n > 1 && <>
           <button onClick={() => setImg((img - 1 + n) % n)} className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow" aria-label="Previous"><ChevronLeft size={20} /></button>
@@ -91,7 +91,7 @@ export default function PropertyDetail() {
       {n > 1 && (
         <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto">
           {p.images.map((src, i) => (
-            <button key={src + i} onClick={() => setImg(i)} className={`h-16 w-24 shrink-0 overflow-hidden rounded-[3px] ring-2 ${i === img ? 'ring-ink' : 'ring-transparent opacity-70'}`}>
+            <button key={src + i} onClick={() => setImg(i)} className={`h-16 w-24 shrink-0 overflow-hidden rounded-xl ring-2 ${i === img ? 'ring-ink' : 'ring-transparent opacity-70'}`}>
               <Img src={src} alt="" className="h-full w-full" />
             </button>
           ))}
@@ -107,7 +107,7 @@ export default function PropertyDetail() {
                 <span className="chip bg-canvas text-ink-soft">{t.types[p.type]}</span>
                 <span className="chip bg-canvas text-ink-mute">{t.property.ref} {ref}</span>
               </div>
-              <h1 className="mt-4 font-display text-[36px] font-medium leading-[1.08] sm:text-[48px]">{title}</h1>
+              <h1 className="font-display mt-4 text-[44px] font-semibold leading-[.98] sm:text-[64px]">{title}</h1>
               <p className="mt-2 flex items-center gap-1.5 text-ink-soft"><MapPin size={16} />{[p.address, locationName(p.location), p.city].filter(Boolean).join(', ')}</p>
             </div>
             <button onClick={share} className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-ink-soft ring-1 ring-line hover:bg-canvas hover:text-ink" aria-label={t.property.share} title={t.property.share}><Share2 size={17} /></button>
@@ -116,30 +116,30 @@ export default function PropertyDetail() {
 
           {facts.length > 0 && <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {facts.map(({ icon: Icon, v, l }) => (
-              <div key={l} className="border-t border-ink pt-3">
+              <div key={l} className="rounded-2xl bg-white p-4 ring-1 ring-black/5">
                 <Icon size={20} className="text-brand-600" />
-                <p className="mt-2 font-display text-[26px]">{v}</p>
+                <p className="font-display mt-2 text-[32px] font-semibold leading-none">{v}</p>
                 <p className="text-[13px] text-ink-soft">{l}</p>
               </div>
             ))}
           </div>}
 
-          {p.videoUrl && <video src={p.videoUrl} poster={p.videoPosterUrl} controls playsInline className="mt-10 max-h-[620px] w-full bg-ink" />}
+          {p.videoUrl && <video src={p.videoUrl} poster={p.videoPosterUrl} controls playsInline className="mt-10 max-h-[620px] w-full rounded-[28px] bg-ink" />}
 
           {description && <>
-            <h2 className="mt-10 font-display text-[26px] font-medium">{t.property.about}</h2>
+            <h2 className="mt-10 font-display text-[32px] font-semibold leading-none">{t.property.about}</h2>
             <p className="mt-3 max-w-2xl whitespace-pre-line leading-relaxed text-ink-soft">{description}</p>
           </>}
 
           {details.length > 0 && <>
-            <h2 className="mt-10 font-display text-[26px] font-medium">{t.property.details}</h2>
+            <h2 className="mt-10 font-display text-[32px] font-semibold leading-none">{t.property.details}</h2>
             <dl className="mt-4 grid max-w-xl grid-cols-2 gap-x-6 gap-y-3 text-sm">
               {details.map(([k, v]) => <div key={k}><dt className="text-ink-mute">{k}</dt><dd className="font-semibold">{v}</dd></div>)}
             </dl>
           </>}
 
           {(p.amenities.length > 0 || p.features.length > 0) && <>
-            <h2 className="mt-10 font-display text-[26px] font-medium">{t.property.amenities}</h2>
+            <h2 className="mt-10 font-display text-[32px] font-semibold leading-none">{t.property.amenities}</h2>
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[...p.amenities.map((a) => t.amenities[a] ?? a), ...p.features].map((a) => (
                 <div key={a} className="flex items-center gap-2.5 text-sm font-medium">
@@ -150,21 +150,21 @@ export default function PropertyDetail() {
           </>}
 
           {coords && <>
-            <h2 className="mt-12 font-display text-[26px] font-medium">{t.property.location}</h2>
-            <div className="mt-4 h-80 overflow-hidden rounded-[3px] ring-1 ring-line">
+            <h2 className="mt-12 font-display text-[32px] font-semibold leading-none">{t.property.location}</h2>
+            <div className="mt-5 h-80 overflow-hidden rounded-[28px] ring-1 ring-black/5">
               <Suspense fallback={<div className="h-full bg-canvas" />}><MapView points={[{ id: p.id, ...coords, label: shortPrice(p) }]} /></Suspense>
             </div>
           </>}
-          {area?.about && <div className="mt-12 border-t border-line pt-8">
-            <h2 className="font-display text-[26px] font-medium">{t.property.neighborhood}</h2>
+          {area?.about && <div className="mt-12 rounded-[28px] bg-white p-8 ring-1 ring-black/5">
+            <h2 className="font-display text-[32px] font-semibold leading-none">{t.property.neighborhood}</h2>
             <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{tr(area.about, lang)}</p>
             <Link to={`/neighborhoods/${area.slug}`} className="link mt-4 inline-block">{t.hoods.guide}</Link>
           </div>}
         </div>
 
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="bg-canvas p-6">
-            <p className="font-display text-[26px]">{t.property.contactTitle}</p>
+          <div className="rounded-[28px] bg-white p-6 ring-1 ring-black/5">
+            <p className="font-display text-[32px] font-semibold leading-none">{t.property.contactTitle}</p>
             <p className="mt-1 text-sm text-ink-soft">{t.property.contactSub}</p>
             <a href={wa} target="_blank" rel="noreferrer" className="btn-wa mt-5 w-full"><MessageCircle size={18} />{t.property.whatsapp}</a>
             {sent === 'ok' ? <p className="mt-4 rounded-xl bg-mint-400/15 px-4 py-3 text-sm font-semibold text-mint-600">{t.property.sent}</p>

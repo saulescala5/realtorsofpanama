@@ -39,7 +39,7 @@ export function SmartSearch({ dark = true, onFocusArea }: { dark?: boolean; onFo
   const label = lang === 'es' ? 'Describe la propiedad que buscas' : 'Describe the home you want'
   return (
     <form onSubmit={(e) => { e.preventDefault(); go() }}
-      className={`group flex w-full items-center gap-3 rounded-full p-2 pl-5 transition ${dark ? 'bg-white/[.07] ring-1 ring-white/15 backdrop-blur-xl focus-within:ring-[#E3C46E]/70' : 'bg-white ring-1 ring-black/10 shadow-[0_20px_60px_-30px_rgba(0,0,0,.35)] focus-within:ring-black/40'}`}>
+      className={`group flex w-full items-center gap-3 rounded-full p-1.5 pl-5 transition ${dark ? 'bg-white/[.07] ring-1 ring-white/15 backdrop-blur-xl focus-within:ring-[#E3C46E]/70' : 'bg-white ring-1 ring-black/10 shadow-[0_20px_60px_-30px_rgba(0,0,0,.35)] focus-within:ring-black/40'}`}>
       <Sparkles size={18} className={dark ? 'shrink-0 text-[#E3C46E]' : 'shrink-0 text-black'} />
       <input value={q} onChange={(e) => setQ(e.target.value)} aria-label={label} placeholder={typed + '▍'}
         className={`h-12 min-w-0 flex-1 bg-transparent text-[16px] outline-none sm:text-[17px] ${dark ? 'text-white placeholder:text-white/45' : 'text-black placeholder:text-black/40'}`} style={{ fontFamily: '"Inter Tight", system-ui' }} />

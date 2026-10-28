@@ -4,27 +4,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        // brass gold: 500 for fills/lines, 700 for text on white (AA contrast)
+        // gold accent, used sparingly: 400 fills, 700 text on light backgrounds
         brand: {
-          50: '#F8F4EA', 100: '#F0E7D2', 200: '#E2D0A6', 300: '#D1B77D', 400: '#C2A25E',
-          500: '#B08D45', 600: '#957536', 700: '#7A6029', 800: '#5E4920', 900: '#3F3116',
+          50: '#FBF6E8', 100: '#F6ECCD', 200: '#EEDCA2', 300: '#E9D08A', 400: '#E3C46E', 500: '#D4AE4C', 600: '#B38F33', 700: '#8A6D22', 800: '#664F18', 900: '#3F3110',
         },
-        ink: { DEFAULT: '#000000', soft: '#5B5A57', mute: '#8F8D88' },
+        ink: { DEFAULT: '#000000', soft: '#5E5E5A', mute: '#9A9A95' },
         mint: { 400: '#3DDC97', 500: '#1FAF68', 600: '#178A52' },
-        sun: { 400: '#E2D0A6', 500: '#C2A25E' },
-        line: '#E4E2DD',
-        canvas: '#F3F2EF',
-        night: { DEFAULT: '#000000', 800: '#141413', 700: '#22211F', line: '#2E2D2A' },
+        sun: { 400: '#EEDCA2', 500: '#E3C46E' },
+        line: '#E3E3DF',
+        canvas: '#F4F4F2',
+        paper: '#F4F4F2',
+        night: { DEFAULT: '#000000', 800: '#111110', 700: '#1C1C1A', line: '#2A2A28' },
       },
       fontFamily: {
-        sans: ['Jost', 'system-ui', 'sans-serif'],
-        display: ['"Bodoni Moda"', 'Georgia', 'serif'],
+        sans: ['"Inter Tight"', 'system-ui', 'sans-serif'],
+        display: ['"Instrument Sans"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 1px 2px rgba(0,0,0,.04)',
-        lift: '0 18px 40px -20px rgba(0,0,0,.35)',
+        lift: '0 30px 60px -30px rgba(0,0,0,.35)',
       },
-      borderRadius: { '4xl': '2rem' },
+      borderRadius: { '4xl': '2rem', '5xl': '2.25rem' },
       keyframes: {
         rise: { '0%': { opacity: 0, transform: 'translateY(6px)' }, '100%': { opacity: 1, transform: 'none' } },
       },
