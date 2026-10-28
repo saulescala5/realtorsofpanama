@@ -34,6 +34,8 @@ export interface Property {
   availableDate?: string
   videoUrl?: string
   videoPosterUrl?: string
+  /** 3D / virtual tour link (Matterport, Kuula…). */
+  tourUrl?: string
   images: string[]
   status: ListingStatus
   featured: boolean

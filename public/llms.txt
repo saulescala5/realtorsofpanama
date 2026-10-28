@@ -46,6 +46,10 @@
 - [Choosing a neighborhood in panama city](https://realtorsofpanama.vercel.app/guides/choosing-a-neighborhood-in-panama-city)
 - [Furnished or linea blanca](https://realtorsofpanama.vercel.app/guides/furnished-or-linea-blanca)
 - [Renting out your apartment in panama](https://realtorsofpanama.vercel.app/guides/renting-out-your-apartment-in-panama)
+- [Moving to Panama with your family](https://realtorsofpanama.vercel.app/guides/moving-to-panama-with-family)
+- [Investing in a rental apartment in Panama City](https://realtorsofpanama.vercel.app/guides/investing-in-rental-property-panama-city)
+- [The finca number and the Public Registry, explained](https://realtorsofpanama.vercel.app/guides/finca-and-public-registry-panama)
+- [Living in Casco Viejo](https://realtorsofpanama.vercel.app/guides/living-in-casco-viejo)
 
 ## Useful facts (general information, not legal advice)
 - Panama uses the US dollar.

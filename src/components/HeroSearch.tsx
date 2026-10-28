@@ -14,7 +14,7 @@ const L = {
 const fmt = (n: number) => (n >= 1_000_000 ? `$${n / 1_000_000}M` : n >= 10_000 ? `$${n / 1000}K` : `$${n.toLocaleString('en-US')}`)
 
 /** A field that opens a small panel below it. Closes on outside click or Escape. */
-function Field({ label, value, children, wide = false }: { label: string; value: string; children: (close: () => void) => ReactNode; wide?: boolean }) {
+function Field({ label, value, children, wide = false, right = false }: { label: string; value: string; children: (close: () => void) => ReactNode; wide?: boolean; right?: boolean }) {
   const [open, setOpen] = useState(false)
   const box = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -32,7 +32,7 @@ function Field({ label, value, children, wide = false }: { label: string; value:
         <span className="flex w-full items-center justify-between gap-2 text-[15px] font-medium">{value}<ChevronDown size={15} className={`shrink-0 text-ink-mute transition ${open ? 'rotate-180' : ''}`} /></span>
       </button>
       {open && (
-        <div className={`absolute left-0 top-[calc(100%+8px)] z-30 animate-rise rounded-3xl bg-white p-3 shadow-lift ring-1 ring-black/5 ${wide ? 'w-[300px]' : 'w-[240px]'}`}>
+        <div className={`absolute top-[calc(100%+8px)] z-50 max-h-[360px] animate-rise overflow-y-auto rounded-3xl bg-white p-3 shadow-[0_30px_60px_-20px_rgba(0,0,0,.35)] ring-1 ring-black/5 ${right ? 'right-0' : 'left-0'} ${wide ? 'w-[300px]' : 'w-[260px]'}`}>
           {children(() => setOpen(false))}
         </div>
       )}
@@ -100,7 +100,7 @@ export function HeroSearch({ compact = false }: { compact?: boolean }) {
                   </div>
                 )}
               </Field>
-              <Field label={C.price} value={max ? `${C.upTo} ${fmt(max)}` : C.anyPrice}>
+              <Field label={C.price} value={max ? `${C.upTo} ${fmt(max)}` : C.anyPrice} right>
                 {(close) => (
                   <div className="grid grid-cols-2 gap-1.5">
                     {[0, ...PRICES[op]].map((v) => (
@@ -110,7 +110,7 @@ export function HeroSearch({ compact = false }: { compact?: boolean }) {
                   </div>
                 )}
               </Field>
-              <Field label={`${C.beds} · ${C.baths}`} value={`${beds ? beds + '+' : C.any} · ${baths ? baths + '+' : C.any}`} wide>
+              <Field label={`${C.beds} · ${C.baths}`} value={`${beds ? beds + '+' : C.any} · ${baths ? baths + '+' : C.any}`} wide right>
                 {() => (
                   <div className="space-y-3 p-1">
                     <div><p className="mb-2 text-[13px] text-ink-soft">{t.admin.editor.beds}</p><Chips options={nums} value={beds} onPick={setBeds} label={C.beds} /></div>

@@ -121,40 +121,40 @@ export default function Network() {
 
   return (
     <>
-      <section className="container-x pt-10 sm:pt-16">
-        <h1 className="h-display max-w-[12ch] animate-[lineup_.9s_cubic-bezier(.2,.7,.1,1)_both]">{L.title}</h1>
-        <p className="mt-6 max-w-[56ch] text-[18px] text-ink-soft">{L.sub}</p>
-      </section>
+      <section className="mx-auto w-full max-w-[1080px] px-5 pb-20 pt-10 sm:px-10 sm:pt-14">
+        <h1 className="font-display max-w-[16ch] animate-[lineup_.9s_cubic-bezier(.2,.7,.1,1)_both] text-[44px] font-semibold leading-[.95] sm:text-[64px]">{L.title}</h1>
+        <p className="mt-4 max-w-[56ch] text-[17px] text-ink-soft">{L.sub}</p>
 
-      <section className="container-x py-12 sm:py-16">
-        <p className="mb-4 text-[15px] font-medium">{L.who}</p>
-        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5" role="radiogroup">
+        <div className="mt-10 rounded-[32px] bg-white p-3 ring-1 ring-black/5 sm:p-4">
+        <p className="px-2 pb-3 pt-1 text-[14px] font-medium text-ink-soft">{L.who}</p>
+        <div className="no-scrollbar flex gap-2 overflow-x-auto" role="radiogroup">
           {ROLES.map((x) => (
             <button key={x.id} role="radio" aria-checked={x.id === role} onClick={() => { setRole(x.id); setV({}); setState('idle') }}
-              className={`flex flex-col items-start gap-4 rounded-[24px] p-5 text-left transition ${x.id === role ? 'bg-ink text-white shadow-lift' : 'bg-white ring-1 ring-black/5 hover:ring-black/20'}`}>
-              <Spot name={x.icon} size={48} tone={x.id === role ? 'light' : 'gold'} />
-              <span><span className="block text-[17px] font-semibold leading-tight">{x.t[lang]}</span><span className={`mt-1 block text-[13px] leading-snug ${x.id === role ? 'text-white/60' : 'text-ink-soft'}`}>{x.d[lang]}</span></span>
+              className={`flex h-12 shrink-0 items-center gap-2 rounded-full pl-1.5 pr-5 text-[15px] font-medium transition ${x.id === role ? 'bg-ink text-white' : 'bg-paper hover:bg-black/10'}`}>
+              <Spot name={x.icon} size={36} tone={x.id === role ? 'light' : 'gold'} />{x.t[lang]}
             </button>
           ))}
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1.4fr]">
-          <aside key={role} className="animate-rise rounded-[28px] bg-white p-7 ring-1 ring-black/5 lg:self-start">
-            <p className="text-[13px] font-medium uppercase tracking-[.14em] text-ink/60">{L.perks}</p>
-            <ul className="mt-5 space-y-3">{r.perks.map((p) => <li key={p.en} className="flex gap-3 text-[16px]"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ink text-white"><Check size={13} /></span>{p[lang]}</li>)}</ul>
-            {role === 'realtor' && <p className="mt-6 rounded-2xl bg-paper p-4 text-[14px]">{L.licensedOnly}</p>}
-            {role === 'owner' && <div className="mt-6 rounded-2xl bg-paper p-4 text-[14px]">{L.ownerHint}<Link to="/list-your-property" className="link mt-2 flex items-center gap-1">{L.ownerCta}<ArrowUpRight size={14} /></Link></div>}
+        <div className="mt-3 grid gap-3 lg:grid-cols-[300px_1fr]">
+          <aside key={role} className="animate-rise rounded-[24px] bg-paper p-6">
+            <p className="text-[18px] font-semibold leading-snug">{r.d[lang]}</p>
+            <p className="mt-6 text-[12px] font-medium uppercase tracking-[.14em] text-ink-soft">{L.perks}</p>
+            <ul className="mt-3 space-y-2.5">{r.perks.map((p) => <li key={p.en} className="flex gap-3 text-[15px]"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ink text-white"><Check size={13} /></span>{p[lang]}</li>)}</ul>
+            {role === 'realtor' && <p className="mt-6 rounded-2xl bg-white p-4 text-[13.5px] text-ink-soft">{L.licensedOnly}</p>}
+            {role === 'owner' && <div className="mt-6 rounded-2xl bg-white p-4 text-[14px]">{L.ownerHint}<Link to="/list-your-property" className="link mt-2 flex items-center gap-1">{L.ownerCta}<ArrowUpRight size={14} /></Link></div>}
           </aside>
 
-          <div key={role + 'f'} className="animate-rise rounded-[28px] bg-white p-6 ring-1 ring-black/5 sm:p-8">
+          <div key={role + 'f'} className="animate-rise p-3 sm:p-5">
             {state === 'ok' ? <p className="py-10 text-center text-[18px] font-medium">{L.done}</p> : (
               <form onSubmit={submit} className="space-y-5">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div><label className="label" htmlFor="nw-name">{L.name}</label><input id="nw-name" className="input" required maxLength={120} value={base.name} onChange={(e) => setBase({ ...base, name: e.target.value })} /></div>
                   <div><label className="label" htmlFor="nw-phone">{L.phone}</label><input id="nw-phone" className="input" required maxLength={40} inputMode="tel" placeholder="+507" value={base.phone} onChange={(e) => setBase({ ...base, phone: e.target.value })} /></div>
                 </div>
+                <div className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
                 {fields.map((f) => (
-                  <div key={f.k}>
+                  <div key={f.k} className={f.opts ? 'sm:col-span-2' : ''}>
                     <label className="label" htmlFor={`nw-${f.k}`}>{f.l}{f.req && ' *'}</label>
                     {f.opts ? (
                       <div className="flex flex-wrap gap-2">
@@ -168,6 +168,7 @@ export default function Network() {
                       : <input id={`nw-${f.k}`} className="input" type={f.type ?? 'text'} required={f.req} placeholder={f.ph} maxLength={200} value={v[f.k] ?? ''} onChange={(e) => set(f.k, e.target.value)} />}
                   </div>
                 ))}
+                </div>
                 <div><label className="label" htmlFor="nw-msg">{L.message}</label><textarea id="nw-msg" className="input h-24 py-3" maxLength={1500} value={base.message} onChange={(e) => setBase({ ...base, message: e.target.value })} /></div>
                 {role === 'realtor' && <label className="flex items-start gap-3 text-[14px]"><input type="checkbox" required checked={ok} onChange={(e) => setOk(e.target.checked)} className="mt-0.5 h-5 w-5 accent-black" />{L.confirm}</label>}
                 <button disabled={state === 'busy'} className="btn-primary btn-lg w-full">{role === 'realtor' ? L.send : L.sendOther}<ArrowUpRight size={18} /></button>
@@ -176,6 +177,7 @@ export default function Network() {
             )}
             <a href={waLink(lang === 'es' ? `¡Hola! Soy ${r.t.es.toLowerCase()} y quiero trabajar con Realtors of Panama.` : `Hi! I'm a ${r.t.en.toLowerCase()} and I'd like to work with Realtors of Panama.`)} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 text-[14px] text-ink-soft hover:text-ink"><WhatsAppIcon size={16} className="text-mint-500" />{L.wa}</a>
           </div>
+        </div>
         </div>
       </section>
     </>

@@ -12,9 +12,9 @@ export const en = {
     storage: 'Storage', terrace: 'Terrace / balcony', ac: 'Air conditioning', socialArea: 'Social area', playground: 'Kids area', generator: 'Power backup',
   } as Record<string, string>,
   home: {
-    eyebrow: 'Panama’s network of licensed realtors',
+    eyebrow: 'The Panama real estate network',
     h1: 'Find your place in Panama.',
-    sub: 'We connect you with licensed real estate agents and verified homes. It all starts with a WhatsApp.',
+    sub: 'Tell us what you’re looking for. We find the homes that fit, book the visits and stay with you until you get the keys.',
     quick: [['Rent', '/properties?op=rent'], ['Buy', '/properties?op=sale'], ['Publish your property', '/list-your-property'], ['Invest', '/properties?op=sale']],
     mapHint: 'Hover a neighborhood to fly there',
     gets: [['Same-day options', 'Real homes on WhatsApp, not a form reply.'], ['Off-market access', 'What never reaches the portals reaches you.'], ['One advisor', 'From the first visit to the keys, licensed.']],

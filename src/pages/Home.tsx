@@ -18,44 +18,73 @@ import { useSeo } from '@/lib/seo'
 const X = {
   en: {
     startWa: 'Start on WhatsApp', browse: 'Browse homes',
-    trust: ['Licensed in Panama', 'Verified listings', 'English & Spanish'],
+    trust: ['Verified listings', 'Replies in minutes', 'English & Spanish'],
     howEyebrow: 'How it works', howTitle: 'From one message to your keys',
     how: [
-      ['chat', 'You write on WhatsApp', 'Our assistant answers right away, day or night, and learns what you need.'],
-      ['agent', 'We connect you with an agent', 'A licensed, verified real estate professional who knows the area takes over.'],
-      ['calendar', 'You visit verified homes', 'Availability is confirmed before you go. Visits are scheduled in the chat.'],
-      ['key', 'You close with confidence', 'Offer, contract review and keys, with your agent beside you.'],
+      ['chat', 'Tell us what you need', 'Area, budget and dates in one WhatsApp. We answer in minutes, day or night.'],
+      ['agent', 'Meet your agent', 'Someone who knows the area takes your search and sends homes that actually fit.'],
+      ['calendar', 'Visit the best ones', 'Availability is confirmed before you go. Visits are booked right in the chat.'],
+      ['key', 'Get your keys', 'Offer, contract review and move-in, with your agent beside you the whole way.'],
     ] as [SpotName, string, string][],
     nowEyebrow: 'Ready to close', all: 'All', rent: 'For rent', sale: 'For sale',
     netTitle: 'A network, not a portal',
-    netSub: 'Portals show you everything and help with nothing. Realtors of Panama connects you with licensed professionals who answer, verify and close.',
-    net: [['100%', 'Licensed agents: every professional in our network holds a Panama real estate licence'], ['12', 'Neighborhood guides with real price ranges'], ['24/7', 'First answer on WhatsApp, any time'], ['2', 'Languages, English and Spanish, end to end']],
+    netSub: 'Portals show you everything and help with nothing. We answer, filter out what doesn’t fit, check what’s really available and stay with you until you move in.',
+    net: [['Minutes', 'To your first answer on WhatsApp, any time'], ['12', 'Neighborhood guides with real price ranges'], ['Same day', 'Availability checked before every visit'], ['EN · ES', 'English and Spanish, end to end']],
     audTitle: 'Useful, whoever you are', hoodsEyebrow: 'Neighborhoods',
     hoodsTitle: 'Pick the life, then the home', lifeTitle: 'Life in Panama City',
-    life: [['/life/life-36.jpg', 'Sunday in Casco Viejo'], ['/life/life-29.jpg', 'Bay walks'], ['/life/life-18.jpg', 'Café streets'], ['/life/life-07.jpg', 'Green Clayton'], ['/life/life-14.jpg', 'Avenida Balboa'], ['/life/life-23.jpg', 'Quiet residential'], ['/life/life-15.jpg', 'Costa del Este'], ['/life/life-34.jpg', 'Balconies & views']],
+    life: [['/life/life-36.jpg', 'Sunday in Casco Viejo'], ['/life/life-29.jpg', 'Bay walks'], ['/life/life-18.jpg', 'Café streets'], ['/life/life-07.jpg', 'Green Clayton'], ['/life/life-14.jpg', 'Avenida Balboa'], ['/life/life-23.jpg', 'Quiet residential'], ['/life/life-15.jpg', 'Costa del Este'], ['/life/life-34.jpg', 'Balconies & views'], ['/life/life-17.jpg', 'Weekend brunch'], ['/life/life-27.jpg', 'Tree-lined streets'], ['/life/life-16.jpg', 'Skyline mornings'], ['/life/life-24.jpg', 'Room to breathe']],
     guidesTitle: 'Guides', guidesAll: 'All guides',
     ownersEyebrow: 'For owners',
   },
   es: {
     startWa: 'Empieza por WhatsApp', browse: 'Ver propiedades',
-    trust: ['Con licencia en Panamá', 'Propiedades verificadas', 'Inglés y español'],
+    trust: ['Propiedades verificadas', 'Respuesta en minutos', 'Inglés y español'],
     howEyebrow: 'Cómo funciona', howTitle: 'De un mensaje a tus llaves',
     how: [
-      ['chat', 'Escribes por WhatsApp', 'Nuestro asistente responde al instante, de día o de noche, y entiende lo que necesitas.'],
-      ['agent', 'Te conectamos con un agente', 'Un profesional inmobiliario con licencia, verificado y que conoce la zona, toma el caso.'],
-      ['calendar', 'Visitas propiedades verificadas', 'Confirmamos disponibilidad antes de ir. Las visitas se agendan en el chat.'],
-      ['key', 'Cierras con confianza', 'Oferta, revisión del contrato y llaves, con tu agente al lado.'],
+      ['chat', 'Cuéntanos qué buscas', 'Zona, presupuesto y fechas en un WhatsApp. Respondemos en minutos, de día o de noche.'],
+      ['agent', 'Conoce a tu agente', 'Alguien que conoce la zona toma tu búsqueda y te envía opciones que sí encajan.'],
+      ['calendar', 'Visita las mejores', 'Confirmamos disponibilidad antes de ir. Las visitas se agendan en el chat.'],
+      ['key', 'Recibe tus llaves', 'Oferta, revisión del contrato y mudanza, con tu agente a tu lado.'],
     ] as [SpotName, string, string][],
     nowEyebrow: 'Listas para cerrar', all: 'Todas', rent: 'Alquiler', sale: 'Venta',
     netTitle: 'Una red, no un portal',
-    netSub: 'Los portales te muestran todo y no te ayudan con nada. Realtors of Panama te conecta con profesionales con licencia que responden, verifican y cierran.',
-    net: [['100%', 'Agentes con licencia: cada profesional de la red tiene licencia de corredor en Panamá'], ['12', 'Guías de zonas con rangos de precio reales'], ['24/7', 'Primera respuesta por WhatsApp, a cualquier hora'], ['2', 'Idiomas, inglés y español, de principio a fin']],
+    netSub: 'Los portales te muestran todo y no te ayudan con nada. Nosotros respondemos, filtramos lo que no encaja, verificamos lo disponible y seguimos contigo hasta la mudanza.',
+    net: [['Minutos', 'Para tu primera respuesta por WhatsApp, a cualquier hora'], ['12', 'Guías de zonas con rangos de precio reales'], ['El mismo día', 'Disponibilidad verificada antes de cada visita'], ['EN · ES', 'Inglés y español, de principio a fin']],
     audTitle: 'Útil, seas quien seas', hoodsEyebrow: 'Zonas',
     hoodsTitle: 'Elige la vida, luego la casa', lifeTitle: 'La vida en Ciudad de Panamá',
-    life: [['/life/life-36.jpg', 'Domingo en el Casco'], ['/life/life-29.jpg', 'Paseos por la bahía'], ['/life/life-18.jpg', 'Calles de cafés'], ['/life/life-07.jpg', 'Clayton verde'], ['/life/life-14.jpg', 'Avenida Balboa'], ['/life/life-23.jpg', 'Residencial tranquilo'], ['/life/life-15.jpg', 'Costa del Este'], ['/life/life-34.jpg', 'Balcones y vistas']],
+    life: [['/life/life-36.jpg', 'Domingo en el Casco'], ['/life/life-29.jpg', 'Paseos por la bahía'], ['/life/life-18.jpg', 'Calles de cafés'], ['/life/life-07.jpg', 'Clayton verde'], ['/life/life-14.jpg', 'Avenida Balboa'], ['/life/life-23.jpg', 'Residencial tranquilo'], ['/life/life-15.jpg', 'Costa del Este'], ['/life/life-34.jpg', 'Balcones y vistas'], ['/life/life-17.jpg', 'Brunch de fin de semana'], ['/life/life-27.jpg', 'Calles arboladas'], ['/life/life-16.jpg', 'Mañanas con skyline'], ['/life/life-24.jpg', 'Espacio para respirar']],
     guidesTitle: 'Guías', guidesAll: 'Todas las guías',
     ownersEyebrow: 'Para propietarios',
   },
+}
+
+function StepVisual({ i, lang }: { i: number; lang: 'en' | 'es' }) {
+  const es = lang === 'es'
+  const sh = 'shadow-[0_14px_30px_-14px_rgba(0,0,0,.3)]'
+  if (i === 0) return (
+    <div className="w-[82%] space-y-2">
+      <p className={`ml-auto w-fit max-w-[90%] rounded-2xl rounded-br-md bg-ink px-3 py-2 text-[12.5px] text-white ${sh}`}>{es ? '2 rec. en Paitilla, hasta $1,800' : '2BR in Paitilla, up to $1,800'}</p>
+      <p className={`w-fit max-w-[90%] rounded-2xl rounded-bl-md bg-paper px-3 py-2 text-[12.5px] ${sh}`}><WhatsAppIcon size={11} className="mr-1 inline text-mint-600" />{es ? '¡Claro! ¿Para cuándo?' : 'Sure! When do you move?'}</p>
+    </div>
+  )
+  if (i === 1) return (
+    <div className={`flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 ring-1 ring-black/5 ${sh}`}>
+      <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-ink font-semibold text-white">A<i className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-mint-500 ring-2 ring-white" /></span>
+      <div><p className="text-[13.5px] font-semibold">Andrea M.</p><p className="text-[12px] text-ink-soft">{es ? 'Tu agente · Paitilla' : 'Your agent · Paitilla'}</p></div>
+    </div>
+  )
+  if (i === 2) return (
+    <div className="grid w-[82%] grid-cols-3 gap-1.5">
+      {(es ? ['Jue 4pm', 'Vie 10am', 'Sáb 11am'] : ['Thu 4pm', 'Fri 10am', 'Sat 11am']).map((d, j) => <span key={d} className={`rounded-xl py-2.5 text-center text-[12px] font-medium ${j === 0 ? `bg-ink text-white ${sh}` : 'bg-paper'}`}>{d}</span>)}
+      <span className="col-span-3 mt-1 flex items-center justify-center gap-1.5 rounded-xl bg-mint-500/10 py-2 text-[12px] font-medium text-mint-600"><Check size={13} />{es ? 'Visita agendada' : 'Visit booked'}</span>
+    </div>
+  )
+  return (
+    <div className="text-center">
+      <Spot name="key" size={64} tone="accent" className="mx-auto text-white" />
+      <p className="mt-3 rounded-full bg-white/10 px-4 py-1.5 text-[12.5px] font-medium">{es ? 'Bienvenido a casa' : 'Welcome home'}</p>
+    </div>
+  )
 }
 
 const Eyebrow = ({ children, light = false }: { children: string; light?: boolean }) => (
@@ -67,7 +96,7 @@ export default function Home() {
   const { publicProperties } = useStore()
   const H = t.home
   const L = X[lang]
-  useSeo({ title: lang === 'es' ? 'Realtors of Panama · Red de corredores con licencia en Panamá' : 'Realtors of Panama · Panama’s network of licensed realtors', description: H.sub })
+  useSeo({ title: lang === 'es' ? 'Realtors of Panama · La red inmobiliaria de Panamá' : 'Realtors of Panama · The Panama real estate network', description: H.sub })
   const [faq, setFaq] = useState<number | null>(0)
   const [op, setOp] = useState<'' | 'rent' | 'sale'>('')
   const sorted = [...publicProperties].sort((a, b) => Number(b.featured) - Number(a.featured) || b.createdAt.localeCompare(a.createdAt))
@@ -77,8 +106,8 @@ export default function Home() {
   return (
     <>
       {/* hero */}
-      <section className="relative overflow-hidden">
-                <div className="container-x relative grid items-center gap-14 pb-20 pt-10 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-28">
+      <section className="relative z-10">
+        <div className="container-x relative grid items-center gap-14 pb-20 pt-10 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-28">
           <div className="min-w-0">
             <p className="inline-flex animate-[fadein_.8s_both] items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4 text-[13px] font-medium ring-1 ring-black/5">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-ink text-white"><BadgeCheck size={14} /></span>{H.eyebrow}
@@ -89,7 +118,7 @@ export default function Home() {
               <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa btn-lg"><WhatsAppIcon size={19} />{L.startWa}</a>
               <Link to="/properties" className="btn-ghost btn-lg">{L.browse}<ArrowUpRight size={18} /></Link>
             </div>
-            <div className="mt-10 animate-[fadein_1s_.7s_both]"><HeroSearch compact /></div>
+            <div className="relative z-20 mt-10 animate-[fadein_1s_.7s_both]"><HeroSearch compact /></div>
             <ul className="mt-6 flex animate-[fadein_1s_.85s_both] flex-wrap gap-x-6 gap-y-2 text-[14px] text-ink-soft">
               {L.trust.map((x) => <li key={x} className="flex items-center gap-2"><Check size={15} className="text-mint-600" />{x}</li>)}
             </ul>
@@ -103,15 +132,18 @@ export default function Home() {
         <div className="container-x">
           <Eyebrow>{L.howEyebrow}</Eyebrow>
           <h2 className="h-section max-w-[14ch]">{L.howTitle}</h2>
-          <ol className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="relative mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {L.how.map(([icon, title, d], i) => (
-              <li key={title} className="group relative rounded-[28px] bg-paper p-7 transition hover:-translate-y-1 hover:shadow-lift">
-                <div className="flex items-center justify-between">
-                  <Spot name={icon} size={56} />
-                  <span className="font-display text-[48px] font-semibold leading-none text-black/10">0{i + 1}</span>
+              <li key={title} className={`group relative flex flex-col overflow-hidden rounded-[28px] p-2 transition duration-300 hover:-translate-y-1 ${i === 3 ? 'bg-ink text-white' : 'bg-paper'}`}>
+                <div className={`relative flex h-[200px] items-center justify-center rounded-[22px] ${i === 3 ? 'bg-white/[.06]' : 'bg-white'}`}><StepVisual i={i} lang={lang} /></div>
+                <div className="flex flex-1 flex-col p-5">
+                  <div className="flex items-center gap-3">
+                    <span className={`flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-semibold ${i === 3 ? 'bg-brand-400 text-ink' : 'bg-ink text-white'}`}>{i + 1}</span>
+                    <Spot name={icon} size={30} tone={i === 3 ? 'light' : 'gold'} />
+                  </div>
+                  <p className="font-display mt-5 text-[26px] font-semibold leading-[1.05]">{title}</p>
+                  <p className={`mt-2 text-[15px] leading-relaxed ${i === 3 ? 'text-white/60' : 'text-ink-soft'}`}>{d}</p>
                 </div>
-                <p className="font-display mt-8 text-[26px] font-semibold leading-[1.05]">{title}</p>
-                <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{d}</p>
               </li>
             ))}
           </ol>
@@ -120,16 +152,14 @@ export default function Home() {
 
       {/* listings */}
       <section className="container-x py-20 sm:py-28">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div><Eyebrow>{L.nowEyebrow}</Eyebrow><h2 className="h-section">{H.now}</h2></div>
-          <div className="flex items-center gap-3">
-            <div className="flex gap-0.5 rounded-full bg-white p-1 ring-1 ring-black/10">
-              {([['', L.all], ['rent', L.rent], ['sale', L.sale]] as const).map(([v, l]) => (
-                <button key={v} onClick={() => setOp(v)} className={`h-9 rounded-full px-4 text-[14px] font-medium transition ${op === v ? 'bg-ink text-white' : 'text-ink-soft hover:text-ink'}`}>{l}</button>
-              ))}
-            </div>
-            <Link to={`/properties${op ? `?op=${op}` : ''}`} className="hidden items-center gap-1 text-[15px] text-ink-soft hover:text-ink sm:flex">{H.all}<ArrowUpRight size={16} /></Link>
+        <Eyebrow>{L.nowEyebrow}</Eyebrow><h2 className="h-section">{H.now}</h2>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="flex gap-0.5 rounded-full bg-white p-1 ring-1 ring-black/10" role="tablist">
+            {([['', L.all], ['rent', L.rent], ['sale', L.sale]] as const).map(([v, l]) => (
+              <button key={v} role="tab" aria-selected={op === v} onClick={() => setOp(v)} className={`h-10 rounded-full px-5 text-[14px] font-medium transition ${op === v ? 'bg-ink text-white' : 'text-ink-soft hover:text-ink'}`}>{l}<span className={`ml-1.5 text-[12px] ${op === v ? 'text-white/60' : 'text-ink-mute'}`}>{publicProperties.filter((p) => !v || p.operation === v).length}</span></button>
+            ))}
           </div>
+          <Link to={`/properties${op ? `?op=${op}` : ''}`} className="btn-ghost h-12">{H.all}<ArrowUpRight size={16} /></Link>
         </div>
         {listings.length ? (
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{listings.map((p) => <PropertyCard key={p.id} p={p} />)}</div>
@@ -139,7 +169,6 @@ export default function Home() {
             <a href={waLink('')} target="_blank" rel="noreferrer" className="btn-wa"><WhatsAppIcon size={16} />{H.nowAsk}</a>
           </div>
         )}
-        <Link to="/properties" className="btn-ghost mt-8 sm:hidden">{H.all}<ArrowUpRight size={16} /></Link>
       </section>
 
       {/* network */}

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowUpRight, ArrowDownUp, Map as MapIcon } from 'lucide-react'
+import { ArrowDownUp, Map as MapIcon } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { NEIGHBORHOODS, hood, tr } from '@/lib/neighborhoods'
@@ -11,6 +11,7 @@ import { useSeo, SITE_URL } from '@/lib/seo'
 import { PropertyCard } from '@/components/PropertyCard'
 import { Spot, WhatsAppIcon } from '@/components/icons'
 import { Img } from '@/components/ui'
+import { HoodCard } from '@/components/HoodCards'
 
 const City3D = lazy(() => import('@/components/City3D'))
 
@@ -32,7 +33,6 @@ const demandDot = { 'very-high': 'bg-rose-500', high: 'bg-amber-500', steady: 'b
 
 export function NeighborhoodList() {
   const { t, lang } = useI18n()
-  const { publicProperties } = useStore()
   const L = C[lang]
   const [tag, setTag] = useState<Tag | ''>('')
   const [sort, setSort] = useState<'rent' | 'm2' | 'commute' | ''>('')
@@ -64,31 +64,8 @@ export function NeighborhoodList() {
         </div>
       </section>
 
-      <section className="container-x grid gap-5 py-10 sm:grid-cols-2 lg:grid-cols-3">
-        {shown.map((n) => {
-          const m = MARKET[n.slug]
-          const count = publicProperties.filter((p) => p.location === n.slug).length
-          return (
-            <Link key={n.slug} to={`/neighborhoods/${n.slug}`} className="group overflow-hidden rounded-[28px] bg-white ring-1 ring-black/5 transition hover:-translate-y-1 hover:shadow-lift">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Img src={`/hoods/hood-${n.slug}.jpg`} alt={n.name} className="h-full w-full transition duration-700 group-hover:scale-105" />
-                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[12px] font-medium backdrop-blur">{L.count(count)}</span>
-                <span className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 transition group-hover:bg-ink group-hover:text-white"><ArrowUpRight size={17} /></span>
-              </div>
-              <div className="p-5">
-                <p className="font-display text-[30px] font-semibold leading-none">{n.name}</p>
-                <p className="mt-2 text-[14px] text-ink-soft">{tr(n.tagline, lang)}</p>
-                {m && (
-                  <dl className="mt-5 grid grid-cols-3 gap-2 border-t border-black/10 pt-4 text-[12px] text-ink-soft">
-                    <div><dt>{L.rent}</dt><dd className="mt-1 text-[14px] font-semibold text-ink">{range(m.rent2br)}</dd></div>
-                    <div><dt>{L.m2}</dt><dd className="mt-1 text-[14px] font-semibold text-ink">{range(m.saleM2)}</dd></div>
-                    <div><dt>{L.demand}</dt><dd className="mt-1 flex items-center gap-1.5 text-[14px] font-semibold text-ink"><i className={`h-2 w-2 rounded-full ${demandDot[m.demand]}`} />{L.dem[m.demand]}</dd></div>
-                  </dl>
-                )}
-              </div>
-            </Link>
-          )
-        })}
+      <section className="container-x grid gap-5 py-10 sm:grid-cols-2 lg:grid-cols-4">
+        {shown.map((n) => <HoodCard key={n.slug} n={n} />)}
       </section>
 
       <section className="container-x pb-24">

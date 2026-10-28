@@ -5,19 +5,19 @@ import { WhatsAppIcon } from './icons'
 const T = {
   en: {
     verified: 'Verified today', price: '$2,400', mo: '/mo', title: 'Ocean-view 2BR', where: 'Punta Pacífica',
-    ask: 'Looking for a 2BR near the ocean, around $2,200', reply: '3 verified homes match. Want to visit Thursday?',
-    agent: 'Daniela R.', role: 'Licensed agent', area: 'Punta Pacífica · Paitilla',
+    ask: 'Looking for a 2BR near the ocean, around $2,200', reply: 'I found 3 homes that fit. Want to see them Thursday?',
+    agent: 'Daniela R.', role: 'Your agent', area: 'Punta Pacífica · Paitilla',
     visit: 'Visit booked', when: 'Thu · 4:00 pm', fast: 'Replies in minutes', licensed: 'Licensed in Panama', match: 'Match', score: '96%',
   },
   es: {
     verified: 'Verificada hoy', price: '$2,400', mo: '/mes', title: '2 rec. con vista al mar', where: 'Punta Pacífica',
-    ask: 'Busco 2 recámaras cerca del mar, unos $2,200', reply: '3 propiedades verificadas encajan. ¿Visitamos el jueves?',
-    agent: 'Daniela R.', role: 'Agente con licencia', area: 'Punta Pacífica · Paitilla',
+    ask: 'Busco 2 recámaras cerca del mar, unos $2,200', reply: 'Encontré 3 opciones que encajan. ¿Las vemos el jueves?',
+    agent: 'Daniela R.', role: 'Tu agente', area: 'Punta Pacífica · Paitilla',
     visit: 'Visita agendada', when: 'Jue · 4:00 pm', fast: 'Respuesta en minutos', licensed: 'Licencia en Panamá', match: 'Coincidencia', score: '96%',
   },
 }
 
-const card = 'rounded-[22px] bg-white shadow-[0_24px_60px_-28px_rgba(0,0,0,.35)] ring-1 ring-black/[.06]'
+const card = 'rounded-[22px] bg-white shadow-[0_30px_70px_-24px_rgba(0,0,0,.28),0_8px_20px_-12px_rgba(0,0,0,.12)] ring-1 ring-black/[.05]'
 
 /** Static brand composition: a property, the conversation, the agent and the visit, floating gently. */
 export function HeroCollage() {
@@ -42,12 +42,12 @@ export function HeroCollage() {
       </div>
 
       {/* client message */}
-      <div className="bob absolute right-0 top-[3%] w-[52%]" style={{ animationDelay: '-1s' }}>
+      <div className="absolute right-0 top-[3%] w-[52%]">
         <div className="rounded-[20px] rounded-br-md bg-ink px-4 py-3 text-[13.5px] leading-snug text-white shadow-[0_24px_50px_-24px_rgba(0,0,0,.5)]">{L.ask}</div>
       </div>
 
       {/* reply */}
-      <div className="bob absolute right-[2%] top-[23%] w-[50%]" style={{ animationDelay: '-3s' }}>
+      <div className="absolute right-[2%] top-[23%] w-[50%]">
         <div className={`${card} rounded-bl-md px-4 py-3`}>
           <p className="mb-1 flex items-center gap-1.5 text-[11.5px] font-semibold text-mint-600"><WhatsAppIcon size={13} />Realtors of Panama</p>
           <p className="text-[13.5px] leading-snug">{L.reply}</p>
@@ -55,7 +55,7 @@ export function HeroCollage() {
       </div>
 
       {/* agent */}
-      <div className="bob absolute bottom-[14%] left-0 w-[56%]" style={{ animationDelay: '-2s' }}>
+      <div className="absolute bottom-[14%] left-0 w-[56%]">
         <div className={`${card} flex items-center gap-3 p-3.5`}>
           <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ink text-[17px] font-semibold text-white">D<i className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-mint-500 ring-2 ring-white" /></span>
           <div className="min-w-0">
@@ -67,7 +67,7 @@ export function HeroCollage() {
       </div>
 
       {/* visit */}
-      <div className="bob absolute bottom-[30%] right-0" style={{ animationDelay: '-4s' }}>
+      <div className="absolute bottom-[30%] right-0">
         <div className={`${card} flex items-center gap-3 py-3 pl-3 pr-5`}>
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-paper"><CalendarCheck size={19} /></span>
           <div><p className="text-[12px] text-ink-soft">{L.visit}</p><p className="text-[14px] font-semibold">{L.when}</p></div>
@@ -76,11 +76,7 @@ export function HeroCollage() {
 
       {/* badges */}
       <div className="absolute bottom-[2%] right-[6%] flex flex-col items-end gap-2">
-        <span className="flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-[12.5px] font-medium shadow-sm ring-1 ring-black/[.06]"><BadgeCheck size={14} />{L.licensed}</span>
-        <span className="flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-[12.5px] font-medium shadow-sm ring-1 ring-black/[.06]"><Clock size={14} />{L.fast}</span>
-      </div>
-      <div className="absolute left-[2%] top-[50%] hidden h-16 sm:flex w-16 flex-col items-center justify-center rounded-full bg-ink text-white shadow-lg">
-        <span className="text-[15px] font-semibold leading-none">{L.score}</span><span className="mt-0.5 text-[9px] uppercase tracking-wider text-white/60">{L.match}</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-[13px] font-medium shadow-[0_18px_40px_-18px_rgba(0,0,0,.35)] ring-1 ring-black/[.05]"><Clock size={14} />{L.fast}</span>
       </div>
     </div>
   )

@@ -50,7 +50,7 @@ const toProperty = (r: Row): Property => ({
   furnishing: r.furnishing_status ?? undefined, petPolicy: r.pet_policy ?? undefined,
   features: Array.isArray(r.features) ? r.features : [], amenities: Array.isArray(r.property_amenities) ? r.property_amenities : [],
   hoa: r.hoa ?? undefined, deposit: r.deposit ?? undefined, availableDate: r.available_date ?? undefined,
-  videoUrl: r.video_url ?? undefined, videoPosterUrl: r.video_poster_url ?? undefined,
+  videoUrl: r.video_url ?? undefined, videoPosterUrl: r.video_poster_url ?? undefined, tourUrl: r.virtual_tour_url ?? undefined,
   images: ((r.property_images ?? []) as Row[]).sort((a, b) => a.display_order - b.display_order).map((i) => i.image_url),
   status: r.status, featured: !!r.featured, sample: !!r.is_sample, views: r.views ?? 0, createdAt: r.created_at, updatedAt: r.updated_at,
 })
@@ -62,6 +62,7 @@ const fromProperty = (p: PropertyInput): Row => ({
   furnishing_status: p.furnishing || null, pet_policy: p.petPolicy || null, features: p.features, property_amenities: p.amenities,
   hoa: p.hoa ?? null, deposit: p.deposit ?? null, available_date: p.availableDate || null,
   video_url: p.videoUrl || null, video_poster_url: p.videoPosterUrl || null, status: p.status, featured: p.featured,
+  ...(p.tourUrl !== undefined ? { virtual_tour_url: p.tourUrl || null } : {}),
 })
 
 const toLead = (r: Row): Lead => ({

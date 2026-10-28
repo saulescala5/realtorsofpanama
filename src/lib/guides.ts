@@ -117,6 +117,95 @@ export const GUIDES: Guide[] = [
     },
     cta: { to: '/list-your-property', label: { en: 'List your property', es: 'Publica tu propiedad' } },
   },
+  {
+    slug: 'moving-to-panama-with-family', image: '/guides/guide-6.jpg', minutes: 4,
+    title: { en: 'Moving to Panama with your family: where to start', es: 'Mudarte a Panamá con tu familia: por dónde empezar' },
+    excerpt: { en: 'How families choose an area, what to look for in a building and how to plan the first months.', es: 'Cómo eligen zona las familias, qué buscar en un edificio y cómo planear los primeros meses.' },
+    body: {
+      en: [
+        { p: 'Most families pick the school first and the home second. In Panama City that one decision shapes your commute, your budget and your weekends.' },
+        { h: 'Start with the daily route', p: 'Traffic is the hidden cost of living here. Map school, work and the supermarket before you fall in love with a view. Costa del Este, San Francisco and Clayton are popular with families because daily life fits in a small radius.' },
+        { h: 'What to look for in a building', p: 'A kids area, a pool with shade, 24/7 security and a backup generator make a real difference. Ask about the maintenance fee and what it covers, and whether pets are allowed if you have one.' },
+        { h: 'Rent first, then decide', p: 'Many families rent for the first year. It gives you time to learn the city before buying, and good rentals near schools move fast, so have your documents ready.' },
+        { h: 'How we help', p: 'Tell us the school or the area, your budget and how many bedrooms you need. We send homes that fit your daily route and book the visits around your schedule.' },
+      ],
+      es: [
+        { p: 'La mayoría de las familias eligen primero el colegio y después la casa. En Ciudad de Panamá esa decisión define el tráfico, el presupuesto y los fines de semana.' },
+        { h: 'Empieza por la ruta diaria', p: 'El tráfico es el costo oculto de vivir aquí. Ubica colegio, trabajo y supermercado antes de enamorarte de una vista. Costa del Este, San Francisco y Clayton son populares entre familias porque la vida diaria cabe en un radio pequeño.' },
+        { h: 'Qué buscar en un edificio', p: 'Área infantil, piscina con sombra, seguridad 24/7 y planta eléctrica marcan la diferencia. Pregunta por el mantenimiento y qué incluye, y si aceptan mascotas si tienes una.' },
+        { h: 'Alquila primero, luego decide', p: 'Muchas familias alquilan el primer año. Te da tiempo para conocer la ciudad antes de comprar, y los buenos alquileres cerca de colegios se van rápido, así que ten tus documentos listos.' },
+        { h: 'Cómo te ayudamos', p: 'Dinos el colegio o la zona, tu presupuesto y cuántas recámaras necesitas. Te enviamos opciones que encajan con tu ruta diaria y agendamos las visitas según tu horario.' },
+      ],
+    },
+    cta: { to: '/neighborhoods', label: { en: 'Compare neighborhoods', es: 'Compara zonas' } },
+  },
+  {
+    slug: 'investing-in-rental-property-panama-city', image: '/guides/guide-7.jpg', minutes: 5,
+    title: { en: 'Investing in a rental apartment in Panama City', es: 'Invertir en un apartamento para alquilar en Ciudad de Panamá' },
+    excerpt: { en: 'What rents well, the numbers to check before you buy, and the costs people forget.', es: 'Qué se alquila bien, los números que debes revisar antes de comprar y los costos que se olvidan.' },
+    body: {
+      en: [
+        { p: 'A good rental investment is mostly about demand: who will rent it, how fast, and for how long. The view matters less than the location and the layout.' },
+        { h: 'What rents well', p: 'One and two bedroom units close to the business districts rent fastest, especially furnished. Families look for three bedrooms near schools and are usually long-term tenants.' },
+        { h: 'Numbers to check', p: 'Compare price per square meter with similar buildings, not the asking price. Subtract the maintenance fee, property tax and a vacancy month from the yearly rent before you judge the return.' },
+        { h: 'Costs people forget', p: 'Furniture and appliances, the building’s reserve fund, repairs between tenants and the commission for finding each tenant. Ask for the building’s financial statements before you buy.' },
+        { h: 'How we help', p: 'We show you units with real rent demand, estimate what they rent for, and can find the tenant once you own it.' },
+      ],
+      es: [
+        { p: 'Una buena inversión para alquilar depende sobre todo de la demanda: quién la alquilará, qué tan rápido y por cuánto tiempo. La vista importa menos que la ubicación y la distribución.' },
+        { h: 'Qué se alquila bien', p: 'Las unidades de una y dos recámaras cerca de los distritos de negocios se alquilan más rápido, sobre todo amobladas. Las familias buscan tres recámaras cerca de colegios y suelen quedarse más tiempo.' },
+        { h: 'Números que debes revisar', p: 'Compara el precio por metro cuadrado con edificios similares, no el precio pedido. Resta el mantenimiento, el impuesto de inmueble y un mes vacío del alquiler anual antes de juzgar el retorno.' },
+        { h: 'Costos que se olvidan', p: 'Muebles y electrodomésticos, el fondo de reserva del edificio, reparaciones entre inquilinos y la comisión por conseguir cada inquilino. Pide los estados financieros del edificio antes de comprar.' },
+        { h: 'Cómo te ayudamos', p: 'Te mostramos unidades con demanda real de alquiler, estimamos cuánto rentan y podemos conseguir el inquilino cuando ya seas dueño.' },
+      ],
+    },
+    cta: { to: '/properties?op=sale', label: { en: 'See homes for sale', es: 'Ver propiedades en venta' } },
+  },
+  {
+    slug: 'finca-and-public-registry-panama', image: '/guides/guide-8.jpg', minutes: 3,
+    title: { en: 'The finca number and the Public Registry, explained', es: 'El número de finca y el Registro Público, explicados' },
+    excerpt: { en: 'What the finca is, how to check who owns a property and whether it has liens, before you sign.', es: 'Qué es la finca, cómo verificar quién es el dueño y si tiene gravámenes, antes de firmar.' },
+    body: {
+      en: [
+        { p: 'Every property in Panama is registered at the Registro Público under a number, usually called the finca or folio real. It is the property’s ID.' },
+        { h: 'What the registry tells you', p: 'Who the registered owner is, the size of the property, and whether it has a mortgage, a lien or any restriction. Buyers should always check it, and owners need it to list a property properly.' },
+        { h: 'How to get it', p: 'Owners find the finca number on their title deed or property tax receipt. A registry certificate can be requested from the Registro Público; your lawyer usually does this as part of the purchase.' },
+        { h: 'The location code', p: 'The código de ubicación identifies where the property sits for tax purposes. It appears with the finca on registry and tax documents.' },
+        { h: 'How we help', p: 'Before we publish a property, we check it at the registry. When you buy, we coordinate with your lawyer so nothing is left to chance.' },
+      ],
+      es: [
+        { p: 'Cada propiedad en Panamá está inscrita en el Registro Público bajo un número, normalmente llamado finca o folio real. Es la identificación de la propiedad.' },
+        { h: 'Qué te dice el registro', p: 'Quién es el dueño inscrito, el tamaño de la propiedad y si tiene hipoteca, gravamen o alguna restricción. Los compradores siempre deben revisarlo, y los dueños lo necesitan para publicar correctamente.' },
+        { h: 'Cómo obtenerlo', p: 'Los dueños encuentran el número de finca en su escritura o en el recibo del impuesto de inmueble. Se puede pedir un certificado al Registro Público; normalmente lo hace tu abogado durante la compra.' },
+        { h: 'El código de ubicación', p: 'El código de ubicación identifica dónde está la propiedad para fines fiscales. Aparece junto a la finca en los documentos del registro y de impuestos.' },
+        { h: 'Cómo te ayudamos', p: 'Antes de publicar una propiedad, la verificamos en el registro. Cuando compras, coordinamos con tu abogado para no dejar nada al azar.' },
+      ],
+    },
+    cta: { to: '/list-your-property', label: { en: 'Publish your property', es: 'Publica tu propiedad' } },
+  },
+  {
+    slug: 'living-in-casco-viejo', image: '/guides/guide-9.jpg', minutes: 3,
+    title: { en: 'Living in Casco Viejo: charm, noise and what to ask', es: 'Vivir en el Casco Viejo: encanto, ruido y qué preguntar' },
+    excerpt: { en: 'The old town is beautiful and walkable. Here is what to check before you rent or buy there.', es: 'El casco antiguo es bello y caminable. Esto es lo que debes revisar antes de alquilar o comprar allí.' },
+    body: {
+      en: [
+        { p: 'Casco Viejo is the most walkable part of the city, with restaurants, rooftops and history on every corner. It suits people who want character and don’t mind trading parking for plazas.' },
+        { h: 'Ask about noise', p: 'Weekends can be lively. A unit facing an inner patio or on a quiet street is very different from one above a bar.' },
+        { h: 'Parking and access', p: 'Many restored buildings have no parking. Ask whether the building has spots or nearby rentals, and how deliveries reach the door.' },
+        { h: 'Restored buildings', p: 'Heritage rules protect the facades. Ask when the building was restored, how it handles humidity and what the maintenance fee covers.' },
+        { h: 'How we help', p: 'We know which streets are calm and which buildings are well kept, and we can show you options before they are published.' },
+      ],
+      es: [
+        { p: 'El Casco Viejo es la parte más caminable de la ciudad, con restaurantes, azoteas e historia en cada esquina. Va con quien busca carácter y no le importa cambiar estacionamiento por plazas.' },
+        { h: 'Pregunta por el ruido', p: 'Los fines de semana pueden ser animados. Una unidad hacia un patio interior o en una calle tranquila es muy distinta a una sobre un bar.' },
+        { h: 'Estacionamiento y acceso', p: 'Muchos edificios restaurados no tienen estacionamiento. Pregunta si el edificio tiene puestos o alquiler cerca, y cómo llegan las entregas a la puerta.' },
+        { h: 'Edificios restaurados', p: 'Las normas de patrimonio protegen las fachadas. Pregunta cuándo se restauró el edificio, cómo maneja la humedad y qué incluye el mantenimiento.' },
+        { h: 'Cómo te ayudamos', p: 'Sabemos qué calles son tranquilas y qué edificios están bien cuidados, y podemos mostrarte opciones antes de que se publiquen.' },
+      ],
+    },
+    cta: { to: '/neighborhoods/casco-viejo', label: { en: 'Explore Casco Viejo', es: 'Explora el Casco Viejo' } },
+  },
+
 ]
 
 export const guide = (slug: string) => GUIDES.find((g) => g.slug === slug)

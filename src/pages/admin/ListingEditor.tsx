@@ -214,6 +214,7 @@ export default function ListingEditor() {
           <Fold title={E.video}>
             <div className="grid gap-4">
               <div><label className="label">{E.videoUrl}</label><input className="input" value={d.videoUrl ?? ''} onChange={(e) => set('videoUrl', e.target.value)} placeholder="https://…/video.mp4" /></div>
+              <div><label className="label">3D tour URL (Matterport, Kuula…)</label><input className="input" value={d.tourUrl ?? ''} onChange={(e) => set('tourUrl', e.target.value)} placeholder="https://my.matterport.com/show/?m=…" /></div>
             </div>
           </Fold>
 
