@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
 import './index.css'
@@ -14,15 +14,15 @@ import Network from './pages/Network'
 import Saved from './pages/Saved'
 import { GuideList, GuidePage } from './pages/Guides'
 import { NeighborhoodList, NeighborhoodPage } from './pages/Neighborhoods'
-import Auth from './pages/Auth'
-import AdminLayout from './pages/admin/AdminLayout'
-import Overview from './pages/admin/Overview'
-import Listings from './pages/admin/Listings'
-import ListingEditor from './pages/admin/ListingEditor'
-import ImportPackage from './pages/admin/ImportPackage'
-import Leads from './pages/admin/Leads'
-import Bolsa from './pages/admin/Bolsa'
-import Contracts from './pages/admin/Contracts'
+const Auth = lazy(() => import('./pages/Auth'))
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
+const Overview = lazy(() => import('./pages/admin/Overview'))
+const Listings = lazy(() => import('./pages/admin/Listings'))
+const ListingEditor = lazy(() => import('./pages/admin/ListingEditor'))
+const ImportPackage = lazy(() => import('./pages/admin/ImportPackage'))
+const Leads = lazy(() => import('./pages/admin/Leads'))
+const Bolsa = lazy(() => import('./pages/admin/Bolsa'))
+const Contracts = lazy(() => import('./pages/admin/Contracts'))
 
 const OldLink = () => <Navigate to={`/property/${useParams().id}`} replace />
 
@@ -46,8 +46,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path="neighborhoods" element={<NeighborhoodList />} />
               <Route path="neighborhoods/:slug" element={<NeighborhoodPage />} />
             </Route>
-            <Route path="login" element={<Auth />} />
-            <Route path="admin" element={<AdminLayout />}>
+            <Route path="login" element={<Suspense fallback={null}><Auth /></Suspense>} />
+            <Route path="admin" element={<Suspense fallback={null}><AdminLayout /></Suspense>}>
               <Route index element={<Overview />} />
               <Route path="listings" element={<Listings />} />
               <Route path="listings/new" element={<ListingEditor />} />

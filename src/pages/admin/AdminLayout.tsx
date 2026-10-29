@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Link, NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import { LayoutGrid, Building, Users, LogOut, ExternalLink, Database, FileSignature } from 'lucide-react'
 import { useI18n } from '@/i18n'
@@ -52,7 +53,7 @@ export default function AdminLayout() {
 
       <main className="px-4 pb-28 pt-6 sm:px-6 lg:ml-60 lg:px-10 lg:pb-12 lg:pt-10">
         {demo && <p className="mx-auto mb-4 max-w-6xl rounded-xl bg-sun-400/25 px-4 py-2 text-xs font-semibold text-amber-900">{t.common.demo}</p>}
-        <div className="mx-auto max-w-6xl"><Outlet /></div>
+        <div className="mx-auto max-w-6xl"><Suspense fallback={<div className="p-10 text-center text-ink-soft">{t.common.loading}</div>}><Outlet /></Suspense></div>
       </main>
 
       <nav className="fixed inset-x-0 bottom-0 z-30 flex justify-around border-t border-line bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur lg:hidden">
