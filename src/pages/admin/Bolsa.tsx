@@ -1,9 +1,9 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Upload, Lock, Search, ChevronDown, Copy, Building, Send, TrendingDown, X, Loader2, Users, MapPin, Handshake } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
-import { useBolsa, uploadBolsa, importExports, type ImportResult, waNum, brokerLabel, isRent, isSale, bedsTxt, money, toPropertyType, toFurnishing, clientText, type BItem, type BolsaIndex } from '@/lib/bolsa'
+import { useBolsa, uploadBolsa, importExports, pendingFlyers, readFlyers, photoUrls, photoBlobs, type ImportResult, waNum, brokerLabel, isRent, isSale, bedsTxt, money, toPropertyType, toFurnishing, clientText, type BItem, type BolsaIndex } from '@/lib/bolsa'
 import { LOCATIONS, slugify } from '@/lib/locations'
 import { WhatsAppIcon } from '@/components/icons'
 import type { Lead } from '@/lib/types'
@@ -11,7 +11,7 @@ import type { Lead } from '@/lib/types'
 type Tab = 'offers' | 'demands' | 'matches' | 'brokers' | 'zones'
 const T = {
   es: {
-    title: 'Bolsa de Brokers', priv: 'Privado · solo tú lo ves', update: 'Agregar exportaciones de WhatsApp', updating: 'Guardando…', reading: 'Leyendo chats…', building: 'Procesando…', addedOk: 'Listo:', newGroup: 'grupo nuevo', merged: 'actualizado', hint: 'Exporta cada grupo desde WhatsApp (Más → Exportar chat → Sin archivos) y sube los .zip aquí. Puedes elegir varios a la vez. La primera vez sube todos tus grupos; después, solo la exportación nueva de cada grupo.', updated: 'Actualizada', generated: 'Generada',
+    title: 'Bolsa de Brokers', priv: 'Privado · solo tú lo ves', update: 'Agregar exportaciones de WhatsApp', updating: 'Guardando…', reading: 'Leyendo…', photos: 'Fotos', copying: 'Copiando fotos…', flyersMsg: (n: number) => `${n} flyers (fotos sin texto) aún no se han leído. Leerlos con IA los convierte en ofertas. Usa tu clave de Anthropic: unos 1,500 tokens por imagen, menos de 1 centavo cada uno, y cada foto se lee una sola vez.`, flyersBtn: (n: number) => `Leer ${n} flyers`, building: 'Procesando…', addedOk: 'Listo:', newGroup: 'grupo nuevo', merged: 'actualizado', hint: 'Exporta cada grupo desde WhatsApp (Más → Exportar chat → Incluir archivos, para traer las fotos) y sube los .zip aquí. Puedes elegir varios a la vez. La primera vez sube todos tus grupos; después, solo la exportación nueva de cada grupo.', updated: 'Actualizada', generated: 'Generada',
     empty: 'Aún no hay datos. Sube las exportaciones .zip de tus grupos de WhatsApp. Se guardan privadas en tu Supabase; ni el sitio ni Sofia las leen.',
     tabs: { offers: 'Ofertas', demands: 'Pedidos', matches: 'Matches', brokers: 'Brokers', zones: 'Zonas' },
     search: 'Buscar edificio, zona, texto…', all: 'Todo', rent: 'Alquiler', sale: 'Venta', zone: 'Zona', type: 'Tipo', any: 'Cualquiera', maxPrice: 'Precio máx.', beds: 'Rec. mín.',
@@ -24,7 +24,7 @@ const T = {
     closed: 'Cerrada', inactive: 'Inactiva', drop: 'Bajó', gap: 'diferencia', fileErr: 'No se pudo leer el archivo.',
   },
   en: {
-    title: 'Bolsa de Brokers', priv: 'Private · only you can see this', update: 'Add WhatsApp exports', updating: 'Saving…', reading: 'Reading chats…', building: 'Processing…', addedOk: 'Done:', newGroup: 'new group', merged: 'updated', hint: 'Export each group from WhatsApp (More → Export chat → Without media) and upload the .zip files here. You can pick several at once. The first time, upload all your groups; after that, only the new export of each group.', updated: 'Updated', generated: 'Generated',
+    title: 'Bolsa de Brokers', priv: 'Private · only you can see this', update: 'Add WhatsApp exports', updating: 'Saving…', reading: 'Reading…', photos: 'Photos', copying: 'Copying photos…', flyersMsg: (n: number) => `${n} flyers (photo-only posts) haven't been read yet. Reading them with AI turns them into offers. It uses your Anthropic key: about 1,500 tokens per image, under 1 cent each, and each photo is read only once.`, flyersBtn: (n: number) => `Read ${n} flyers`, building: 'Processing…', addedOk: 'Done:', newGroup: 'new group', merged: 'updated', hint: 'Export each group from WhatsApp (More → Export chat → Include media, to bring the photos) and upload the .zip files here. You can pick several at once. The first time, upload all your groups; after that, only the new export of each group.', updated: 'Updated', generated: 'Generated',
     empty: 'No data yet. Upload the .zip exports of your WhatsApp groups. They are stored privately in your Supabase; neither the site nor Sofia can read them.',
     tabs: { offers: 'Offers', demands: 'Requests', matches: 'Matches', brokers: 'Brokers', zones: 'Zones' },
     search: 'Search building, area, text…', all: 'All', rent: 'Rent', sale: 'Sale', zone: 'Area', type: 'Type', any: 'Any', maxPrice: 'Max price', beds: 'Min beds',
@@ -86,6 +86,8 @@ function Filters({ f, data, L, offers }: { f: ReturnType<typeof useFilters>; dat
 function ItemRow({ i, data, L, onListing, onClient, children }: { i: BItem; data: BolsaIndex; L: typeof T.es; onListing?: (i: BItem) => void; onClient?: (i: BItem) => void; children?: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [pics, setPics] = useState<string[]>([])
+  useEffect(() => { if (open && i.images?.length && !pics.length) photoUrls(i.images.slice(0, 8)).then(setPics) }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
   const b = data.brokerBy.get(i.broker)
   const isOffer = i.kind === 'Oferta'
   return (
@@ -113,6 +115,7 @@ function ItemRow({ i, data, L, onListing, onClient, children }: { i: BItem; data
       </button>
       {open && (
         <div className="border-t border-black/5 p-4">
+          {pics.length > 0 && <div className="no-scrollbar mb-3 flex gap-2 overflow-x-auto">{pics.map((u) => <a key={u} href={u} target="_blank" rel="noreferrer" className="shrink-0"><img src={u} alt="" className="h-28 w-36 rounded-xl object-cover" /></a>)}</div>}
           <pre className="max-h-64 overflow-auto whitespace-pre-wrap rounded-xl bg-paper p-3 font-sans text-[13px] leading-relaxed">{i.text}</pre>
           <p className="mt-2 text-[12px] text-ink-mute">{i.groups.join(' · ')} · {fmtDate(i.first_seen)} → {fmtDate(i.last_seen)}{i.price_history.length > 1 && ` · ${i.price_history.map(([, p]) => money(p)).join(' → ')}`}</p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -182,16 +185,29 @@ export default function Bolsa() {
     } catch (e) { setErr(e instanceof Error ? e.message : L.fileErr) }
     setBusy(false); setStep(''); if (file.current) file.current.value = ''
   }
-  const { findBySourceCode } = useStore()
+  const { findBySourceCode, uploadPhoto } = useStore()
+  const [flyers, setFlyers] = useState<string[]>([])
+  useEffect(() => { if (data) pendingFlyers().then(setFlyers).catch(() => {}) }, [data])
+  const doFlyers = async () => {
+    setBusy(true); setErr('')
+    try { await readFlyers(flyers, setStep); setFlyers([]) } catch (e) { setErr(e instanceof Error ? e.message : String(e)) }
+    setBusy(false); setStep('')
+  }
   const toListing = async (o: BItem) => {
     const ex = await findBySourceCode(`bolsa:${o.key}`)
     if (ex) { nav(`/admin/listings/${ex}`); return }
     const zone = o.zones[0] ?? ''
+    let images: string[] = []
+    if (o.images?.length) {
+      setBusy(true); setStep('copy')
+      try { const blobs = await photoBlobs(o.images.slice(0, 12)); images = await Promise.all(blobs.map((b, n) => uploadPhoto(b, `bolsa-${o.key}-${n}.jpg`))) } catch { /* continue without photos */ }
+      setBusy(false); setStep('')
+    }
     nav('/admin/listings/new', { state: {
       prefill: {
         title: o.title, description: '', operation: isRent(o) ? 'rent' : 'sale', type: toPropertyType(o.type), price: o.price ?? 0,
         beds: o.beds_min ?? 0, baths: o.baths ?? 0, area: o.m2 ?? 0, parking: o.parking ?? 0, furnishing: toFurnishing(o.furnished),
-        location: LOCATIONS.find((l) => l.name === zone)?.slug ?? slugify(zone),
+        location: LOCATIONS.find((l) => l.name === zone)?.slug ?? slugify(zone), images,
       },
       source: { sourceCode: `bolsa:${o.key}`, sourceLink: o.urls[0], contactName: brokerLabel(data?.brokerBy.get(o.broker)), contactPhone: data?.brokerBy.get(o.broker)?.phone, notes: o.text },
     } })
@@ -205,10 +221,11 @@ export default function Bolsa() {
       </div>
       <div>
         <input ref={file} type="file" multiple accept=".zip,.txt,.json" className="hidden" onChange={(e) => pick(e.target.files)} />
-        <button onClick={() => file.current?.click()} disabled={busy} className="btn-primary">{busy ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}{busy ? (step === 'build' ? L.building : step === 'save' ? L.updating : L.reading) : L.update}</button>
+        <button onClick={() => file.current?.click()} disabled={busy} className="btn-primary">{busy ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}{busy ? (step === 'build' ? L.building : step === 'save' ? L.updating : step === 'copy' ? L.copying : step.startsWith('photos') ? `${L.photos} ${step.slice(7)}` : /^\d+\/\d+$/.test(step) ? `${L.reading} ${step}` : L.reading) : L.update}</button>
       </div>
       <p className="w-full text-[13px] text-ink-soft">{L.hint}</p>
-      {done.length > 0 && <p className="w-full rounded-xl bg-mint-500/10 px-4 py-3 text-[13px] text-mint-600">{L.addedOk} {done.map((d) => `${d.name} (${d.msgs} msgs, ${d.first} → ${d.last}, ${d.isNew ? L.newGroup : L.merged})`).join(' · ')}</p>}
+      {flyers.length > 0 && <div className="flex w-full flex-wrap items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 ring-1 ring-black/5"><p className="max-w-[80ch] text-[13px] text-ink-soft">{L.flyersMsg(flyers.length)}</p><button onClick={doFlyers} disabled={busy} className="btn-soft btn-sm">{L.flyersBtn(flyers.length)}</button></div>}
+      {done.length > 0 && <p className="w-full rounded-xl bg-mint-500/10 px-4 py-3 text-[13px] text-mint-600">{L.addedOk} {done.map((d) => `${d.name} (${d.msgs} msgs, ${d.first} → ${d.last}, ${d.photos} {L.photos.toLowerCase()}, {d.isNew ? L.newGroup : L.merged})`).join(' · ')}</p>}
     </div>
   )
   if (!data) return (

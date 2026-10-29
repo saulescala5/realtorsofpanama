@@ -61,7 +61,7 @@ export async function uploadBolsa(file: File): Promise<BolsaIndex> {
   const b = validate(JSON.parse(text))
   if (supabase) {
     const { error } = await supabase.storage.from('bolsa').upload(PATH, await gzip(text), { upsert: true, contentType: 'application/gzip' })
-    if (error) throw new Error(error.message)
+    if (error) throw new Error(error.message === 'Bucket not found' ? 'Bucket not found: run 7_admin_tools.sql in Supabase first.' : error.message)
     meta = { updated: new Date().toISOString() }
   }
   cache = index(b); emit(); return cache
@@ -127,8 +127,9 @@ export function clientText(o: BItem, lang: 'en' | 'es' = 'es') {
 }
 
 // ---------------------------------------------------------------- WhatsApp exports → Bolsa
-// The raw chats are kept privately (bolsa/chats.json.gz) so each new export of a group merges with the old ones.
-interface ChatStore { groups: { name: string; key: string; texts: string[] }[] }
+// Raw chats, uploaded photos and flyer readings are kept privately (bolsa/chats.json.gz, bolsa/media/*),
+// so each new export of a group merges with the old ones and nothing is read twice.
+interface ChatStore { groups: { name: string; key: string; texts: string[] }[]; media?: string[]; flyerText?: Record<string, string> }
 const CHATS = 'chats.json.gz'
 let chatsMem: ChatStore | null = null
 
@@ -141,51 +142,136 @@ async function loadChats(): Promise<ChatStore> {
   chatsMem = { groups: [] }; return chatsMem
 }
 
-async function readExport(f: File): Promise<{ text: string; inner: string }> {
+type ZipEntry = { name: string; dir: boolean; async(t: 'blob'): Promise<Blob>; async(t: 'string'): Promise<string> }
+async function readExport(f: File): Promise<{ text: string; inner: string; photos: Map<string, ZipEntry> }> {
+  const photos = new Map<string, ZipEntry>()
   if (/\.zip$/i.test(f.name)) {
     const JSZip = (await import('jszip')).default
     const zip = await JSZip.loadAsync(f)
-    const txt = Object.values(zip.files).filter((z) => !z.dir && /\.txt$/i.test(z.name))
-      .sort((a, b) => ((b as unknown as { _data?: { uncompressedSize?: number } })._data?.uncompressedSize ?? 0) - ((a as unknown as { _data?: { uncompressedSize?: number } })._data?.uncompressedSize ?? 0))[0]
+    const files = Object.values(zip.files) as unknown as (ZipEntry & { _data?: { uncompressedSize?: number } })[]
+    const txt = files.filter((z) => !z.dir && /\.txt$/i.test(z.name)).sort((a, b) => (b._data?.uncompressedSize ?? 0) - (a._data?.uncompressedSize ?? 0))[0]
     if (!txt) throw new Error(`${f.name}: the zip has no chat (.txt)`)
-    return { text: await txt.async('string'), inner: txt.name }
+    for (const z of files) { const n = z.name.split('/').pop()!; if (!z.dir && /\.(jpe?g|png|webp)$/i.test(n) && !/^STK-/i.test(n)) photos.set(n, z) }
+    return { text: await txt.async('string'), inner: txt.name, photos }
   }
-  return { text: await f.text(), inner: f.name }
+  return { text: await f.text(), inner: f.name, photos }
 }
 
-export interface ImportResult { name: string; msgs: number; first: string; last: string; isNew: boolean }
+/** Shrinks a photo to max 1280px JPEG before storing it. */
+async function shrink(blob: Blob): Promise<Blob> {
+  try {
+    const bmp = await createImageBitmap(blob)
+    const k = Math.min(1, 1280 / Math.max(bmp.width, bmp.height))
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k)
+    c.getContext('2d')!.drawImage(bmp, 0, 0, c.width, c.height)
+    return await new Promise((r) => c.toBlob((b) => r(b ?? blob), 'image/jpeg', 0.82))
+  } catch { return blob }
+}
 
-/** Add one or more WhatsApp group exports (.zip or .txt), rebuild the Bolsa and save it privately. */
-export async function importExports(files: File[], onStep?: (s: string) => void): Promise<ImportResult[]> {
+async function rebuild(store: ChatStore): Promise<Bolsa> {
   const Engine = (await import('./bolsaEngine')).default
-  const store = await loadChats()
-  const out: ImportResult[] = []
-  for (const f of files) {
-    onStep?.(f.name)
-    const { text, inner } = await readExport(f)
-    const r = Engine.parseChat(text)
-    const real = r.msgs.filter((m: { system?: boolean }) => !m.system)
-    if (real.length < 3) throw new Error(`${f.name}: this doesn't look like a WhatsApp chat export`)
-    const name: string = r.names[r.names.length - 1] || Engine.groupFromFile(inner) || Engine.groupFromFile(f.name) || f.name
-    const key: string = Engine.groupKey(name)
-    let g = store.groups.find((x) => x.key === key)
-    const isNew = !g
-    if (!g) { g = { name, key, texts: [] }; store.groups.push(g) }
-    if (!g.texts.includes(text)) g.texts.push(text)
-    out.push({ name, msgs: real.length, first: real[0].dt.slice(0, 10), last: real[real.length - 1].dt.slice(0, 10), isNew })
-  }
-  onStep?.('build')
-  await new Promise((r) => setTimeout(r, 30))
-  const built = Engine.build(store.groups.map((g) => ({ name: g.name, msgs: Engine.mergeMsgs(g.texts.map((t) => Engine.parseChat(t).msgs)) })), [], []) as unknown as Bolsa
+  return Engine.build(store.groups.map((g) => ({ name: g.name, msgs: Engine.mergeMsgs(g.texts.map((t) => Engine.parseChat(t).msgs)) })), store.flyerText ?? {}, []) as unknown as Bolsa
+}
+async function saveAll(store: ChatStore, built: Bolsa) {
   if (supabase) {
-    onStep?.('save')
     const a = await supabase.storage.from('bolsa').upload(CHATS, await gzip(JSON.stringify(store)), { upsert: true, contentType: 'application/gzip' })
-    if (a.error) throw new Error(a.error.message)
+    if (a.error) throw new Error(a.error.message === 'Bucket not found' ? 'Bucket not found: run 7_admin_tools.sql in Supabase first.' : a.error.message)
     const b = await supabase.storage.from('bolsa').upload(PATH, await gzip(JSON.stringify(built)), { upsert: true, contentType: 'application/gzip' })
     if (b.error) throw new Error(b.error.message)
     meta = { updated: new Date().toISOString() }
   }
   cache = index(validate(built)); emit()
+}
+
+export interface ImportResult { name: string; msgs: number; first: string; last: string; isNew: boolean; photos: number }
+
+/** Add WhatsApp group exports (.zip with or without media, or .txt), rebuild the Bolsa and save it privately. */
+export async function importExports(files: File[], onStep?: (s: string) => void): Promise<ImportResult[]> {
+  const Engine = (await import('./bolsaEngine')).default
+  const store = await loadChats()
+  store.media ??= []; store.flyerText ??= {}
+  const out: ImportResult[] = []
+  const photos = new Map<string, ZipEntry>()
+  for (const f of files) {
+    onStep?.(f.name)
+    const ex = await readExport(f)
+    ex.photos.forEach((v, k) => photos.set(k, v))
+    const r = Engine.parseChat(ex.text)
+    const real = r.msgs.filter((m: { system?: boolean }) => !m.system)
+    if (real.length < 3) throw new Error(`${f.name}: this doesn't look like a WhatsApp chat export`)
+    const name: string = r.names[r.names.length - 1] || Engine.groupFromFile(ex.inner) || Engine.groupFromFile(f.name) || f.name
+    const key: string = Engine.groupKey(name)
+    let g = store.groups.find((x) => x.key === key)
+    const isNew = !g
+    if (!g) { g = { name, key, texts: [] }; store.groups.push(g) }
+    if (!g.texts.includes(ex.text)) g.texts.push(ex.text)
+    out.push({ name, msgs: real.length, first: real[0].dt.slice(0, 10), last: real[real.length - 1].dt.slice(0, 10), isNew, photos: ex.photos.size })
+  }
+  onStep?.('build')
+  await new Promise((r) => setTimeout(r, 30))
+  const built = await rebuild(store)
+  // store only the photos that belong to an offer, a request or a flyer
+  const wanted = new Set<string>([...built.offers, ...built.demands].flatMap((o) => o.images ?? []).concat((built as unknown as { flyers: { images: string[] }[] }).flyers.flatMap((f) => f.images)))
+  const todo = [...photos.keys()].filter((n) => wanted.has(n) && !store.media!.includes(n))
+  if (supabase && todo.length) {
+    let done = 0
+    const work = async () => {
+      for (let n = todo.shift(); n; n = todo.shift()) {
+        const blob = await shrink(await photos.get(n)!.async('blob'))
+        const { error } = await supabase!.storage.from('bolsa').upload(`media/${n}`, blob, { upsert: true, contentType: 'image/jpeg' })
+        if (error?.message === 'Bucket not found') throw new Error('Bucket not found: run 7_admin_tools.sql in Supabase first.')
+        if (!error) store.media!.push(n)
+        onStep?.(`photos ${++done}`)
+      }
+    }
+    await Promise.all([work(), work(), work(), work()])
+  }
+  onStep?.('save')
+  await saveAll(store, built)
+  return out
+}
+
+/** Flyers (image-only posts) whose photo is stored but not read yet. */
+export async function pendingFlyers(): Promise<string[]> {
+  const store = await loadChats()
+  const ft = store.flyerText ?? {}
+  const media = new Set(store.media ?? [])
+  return [...new Set((cache as unknown as { flyers?: { images: string[] }[] })?.flyers?.flatMap((f) => f.images) ?? [])].filter((n) => media.has(n) && !(n in ft))
+}
+
+/** Reads pending flyers with Claude (Edge Function "bolsa-flyer"), then rebuilds so they become offers. */
+export async function readFlyers(names: string[], onStep?: (s: string) => void) {
+  if (!supabase) throw new Error('Connect Supabase first')
+  const store = await loadChats()
+  store.flyerText ??= {}
+  for (let i = 0; i < names.length; i += 5) {
+    const batch = names.slice(i, i + 5)
+    const { data, error } = await supabase.functions.invoke('bolsa-flyer', { body: { paths: batch.map((n) => `media/${n}`) } })
+    if (error) throw new Error(error.message.includes('not found') || error.message.includes('Failed to send') ? 'Deploy the bolsa-flyer Edge Function first.' : error.message)
+    for (const n of batch) store.flyerText[n] = (data?.texts?.[`media/${n}`] as string) ?? ''
+    onStep?.(`${Math.min(i + 5, names.length)}/${names.length}`)
+  }
+  onStep?.('build')
+  await saveAll(store, await rebuild(store))
+}
+
+const urlCache = new Map<string, string>()
+/** Temporary links (1 hour) to stored photos. */
+export async function photoUrls(names: string[]): Promise<string[]> {
+  if (!supabase || !names.length) return []
+  const missing = names.filter((n) => !urlCache.has(n))
+  if (missing.length) {
+    const { data } = await supabase.storage.from('bolsa').createSignedUrls(missing.map((n) => `media/${n}`), 3600)
+    data?.forEach((d, i) => { if (d.signedUrl) urlCache.set(missing[i], d.signedUrl) })
+  }
+  return names.map((n) => urlCache.get(n)).filter(Boolean) as string[]
+}
+
+/** Downloads stored photos as blobs (to copy them into a public listing). */
+export async function photoBlobs(names: string[]): Promise<Blob[]> {
+  if (!supabase) return []
+  const out: Blob[] = []
+  for (const n of names) { const { data } = await supabase.storage.from('bolsa').download(`media/${n}`); if (data) out.push(data) }
   return out
 }
 
