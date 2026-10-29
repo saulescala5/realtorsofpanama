@@ -125,3 +125,68 @@ export function clientText(o: BItem, lang: 'en' | 'es' = 'es') {
   const price = `${money(o.price)}${isRent(o) ? (lang === 'es' ? '/mes' : '/mo') : ''}`
   return lang === 'es' ? `*${line}*\n${specs}\n${price}\n\n¿Te gustaría verla? Te confirmo disponibilidad y agendamos la visita.` : `*${line}*\n${specs}\n${price}\n\nWould you like to see it? I'll confirm availability and book the visit.`
 }
+
+// ---------------------------------------------------------------- WhatsApp exports → Bolsa
+// The raw chats are kept privately (bolsa/chats.json.gz) so each new export of a group merges with the old ones.
+interface ChatStore { groups: { name: string; key: string; texts: string[] }[] }
+const CHATS = 'chats.json.gz'
+let chatsMem: ChatStore | null = null
+
+async function loadChats(): Promise<ChatStore> {
+  if (chatsMem) return chatsMem
+  if (supabase) {
+    const { data } = await supabase.storage.from('bolsa').download(CHATS)
+    if (data) { chatsMem = JSON.parse(await gunzip(data)) as ChatStore; return chatsMem }
+  }
+  chatsMem = { groups: [] }; return chatsMem
+}
+
+async function readExport(f: File): Promise<{ text: string; inner: string }> {
+  if (/\.zip$/i.test(f.name)) {
+    const JSZip = (await import('jszip')).default
+    const zip = await JSZip.loadAsync(f)
+    const txt = Object.values(zip.files).filter((z) => !z.dir && /\.txt$/i.test(z.name))
+      .sort((a, b) => ((b as unknown as { _data?: { uncompressedSize?: number } })._data?.uncompressedSize ?? 0) - ((a as unknown as { _data?: { uncompressedSize?: number } })._data?.uncompressedSize ?? 0))[0]
+    if (!txt) throw new Error(`${f.name}: the zip has no chat (.txt)`)
+    return { text: await txt.async('string'), inner: txt.name }
+  }
+  return { text: await f.text(), inner: f.name }
+}
+
+export interface ImportResult { name: string; msgs: number; first: string; last: string; isNew: boolean }
+
+/** Add one or more WhatsApp group exports (.zip or .txt), rebuild the Bolsa and save it privately. */
+export async function importExports(files: File[], onStep?: (s: string) => void): Promise<ImportResult[]> {
+  const Engine = (await import('./bolsaEngine')).default
+  const store = await loadChats()
+  const out: ImportResult[] = []
+  for (const f of files) {
+    onStep?.(f.name)
+    const { text, inner } = await readExport(f)
+    const r = Engine.parseChat(text)
+    const real = r.msgs.filter((m: { system?: boolean }) => !m.system)
+    if (real.length < 3) throw new Error(`${f.name}: this doesn't look like a WhatsApp chat export`)
+    const name: string = r.names[r.names.length - 1] || Engine.groupFromFile(inner) || Engine.groupFromFile(f.name) || f.name
+    const key: string = Engine.groupKey(name)
+    let g = store.groups.find((x) => x.key === key)
+    const isNew = !g
+    if (!g) { g = { name, key, texts: [] }; store.groups.push(g) }
+    if (!g.texts.includes(text)) g.texts.push(text)
+    out.push({ name, msgs: real.length, first: real[0].dt.slice(0, 10), last: real[real.length - 1].dt.slice(0, 10), isNew })
+  }
+  onStep?.('build')
+  await new Promise((r) => setTimeout(r, 30))
+  const built = Engine.build(store.groups.map((g) => ({ name: g.name, msgs: Engine.mergeMsgs(g.texts.map((t) => Engine.parseChat(t).msgs)) })), [], []) as unknown as Bolsa
+  if (supabase) {
+    onStep?.('save')
+    const a = await supabase.storage.from('bolsa').upload(CHATS, await gzip(JSON.stringify(store)), { upsert: true, contentType: 'application/gzip' })
+    if (a.error) throw new Error(a.error.message)
+    const b = await supabase.storage.from('bolsa').upload(PATH, await gzip(JSON.stringify(built)), { upsert: true, contentType: 'application/gzip' })
+    if (b.error) throw new Error(b.error.message)
+    meta = { updated: new Date().toISOString() }
+  }
+  cache = index(validate(built)); emit()
+  return out
+}
+
+export async function storedGroups() { return (await loadChats()).groups.map((g) => ({ name: g.name, exports: g.texts.length })) }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Upload, Lock, Search, ChevronDown, Copy, Building, Send, TrendingDown, X, Loader2, Users, MapPin, Handshake } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
-import { useBolsa, uploadBolsa, waNum, brokerLabel, isRent, isSale, bedsTxt, money, toPropertyType, toFurnishing, clientText, type BItem, type BolsaIndex } from '@/lib/bolsa'
+import { useBolsa, uploadBolsa, importExports, type ImportResult, waNum, brokerLabel, isRent, isSale, bedsTxt, money, toPropertyType, toFurnishing, clientText, type BItem, type BolsaIndex } from '@/lib/bolsa'
 import { LOCATIONS, slugify } from '@/lib/locations'
 import { WhatsAppIcon } from '@/components/icons'
 import type { Lead } from '@/lib/types'
@@ -11,8 +11,8 @@ import type { Lead } from '@/lib/types'
 type Tab = 'offers' | 'demands' | 'matches' | 'brokers' | 'zones'
 const T = {
   es: {
-    title: 'Bolsa de Brokers', priv: 'Privado · solo tú lo ves', update: 'Actualizar data.json', updating: 'Subiendo…', updated: 'Actualizada', generated: 'Generada',
-    empty: 'Aún no hay datos. Sube el data.json que genera tu Bolsa de Brokers. Se guarda privado en tu Supabase; ni el sitio ni Sofia lo leen.',
+    title: 'Bolsa de Brokers', priv: 'Privado · solo tú lo ves', update: 'Agregar exportaciones de WhatsApp', updating: 'Guardando…', reading: 'Leyendo chats…', building: 'Procesando…', addedOk: 'Listo:', newGroup: 'grupo nuevo', merged: 'actualizado', hint: 'Exporta cada grupo desde WhatsApp (Más → Exportar chat → Sin archivos) y sube los .zip aquí. Puedes elegir varios a la vez. La primera vez sube todos tus grupos; después, solo la exportación nueva de cada grupo.', updated: 'Actualizada', generated: 'Generada',
+    empty: 'Aún no hay datos. Sube las exportaciones .zip de tus grupos de WhatsApp. Se guardan privadas en tu Supabase; ni el sitio ni Sofia las leen.',
     tabs: { offers: 'Ofertas', demands: 'Pedidos', matches: 'Matches', brokers: 'Brokers', zones: 'Zonas' },
     search: 'Buscar edificio, zona, texto…', all: 'Todo', rent: 'Alquiler', sale: 'Venta', zone: 'Zona', type: 'Tipo', any: 'Cualquiera', maxPrice: 'Precio máx.', beds: 'Rec. mín.',
     activeOnly: 'Solo activas', drops: 'Bajaron de precio', results: (n: number) => `${n.toLocaleString()} resultados`, more: 'Ver más',
@@ -24,8 +24,8 @@ const T = {
     closed: 'Cerrada', inactive: 'Inactiva', drop: 'Bajó', gap: 'diferencia', fileErr: 'No se pudo leer el archivo.',
   },
   en: {
-    title: 'Bolsa de Brokers', priv: 'Private · only you can see this', update: 'Update data.json', updating: 'Uploading…', updated: 'Updated', generated: 'Generated',
-    empty: 'No data yet. Upload the data.json your Bolsa de Brokers creates. It is stored privately in your Supabase; neither the site nor Sofia can read it.',
+    title: 'Bolsa de Brokers', priv: 'Private · only you can see this', update: 'Add WhatsApp exports', updating: 'Saving…', reading: 'Reading chats…', building: 'Processing…', addedOk: 'Done:', newGroup: 'new group', merged: 'updated', hint: 'Export each group from WhatsApp (More → Export chat → Without media) and upload the .zip files here. You can pick several at once. The first time, upload all your groups; after that, only the new export of each group.', updated: 'Updated', generated: 'Generated',
+    empty: 'No data yet. Upload the .zip exports of your WhatsApp groups. They are stored privately in your Supabase; neither the site nor Sofia can read them.',
     tabs: { offers: 'Offers', demands: 'Requests', matches: 'Matches', brokers: 'Brokers', zones: 'Zones' },
     search: 'Search building, area, text…', all: 'All', rent: 'Rent', sale: 'Sale', zone: 'Area', type: 'Type', any: 'Any', maxPrice: 'Max price', beds: 'Min beds',
     activeOnly: 'Active only', drops: 'Price drops', results: (n: number) => `${n.toLocaleString()} results`, more: 'Show more',
@@ -168,11 +168,19 @@ export default function Bolsa() {
   const offers = useFilters(data?.offers ?? [])
   const demands = useFilters(data?.demands ?? [])
 
-  const pick = async (f?: File) => {
-    if (!f) return
-    setBusy(true); setErr('')
-    try { await uploadBolsa(f) } catch (e) { setErr(e instanceof Error ? e.message : L.fileErr) }
-    setBusy(false); if (file.current) file.current.value = ''
+  const [step, setStep] = useState('')
+  const [done, setDone] = useState<ImportResult[]>([])
+  const pick = async (list?: FileList | null) => {
+    const files = [...(list ?? [])]
+    if (!files.length) return
+    setBusy(true); setErr(''); setDone([])
+    try {
+      const json = files.find((f) => /\.json$/i.test(f.name))
+      if (json) await uploadBolsa(json)
+      const chats = files.filter((f) => /\.(zip|txt)$/i.test(f.name))
+      if (chats.length) setDone(await importExports(chats, setStep))
+    } catch (e) { setErr(e instanceof Error ? e.message : L.fileErr) }
+    setBusy(false); setStep(''); if (file.current) file.current.value = ''
   }
   const { findBySourceCode } = useStore()
   const toListing = async (o: BItem) => {
@@ -196,9 +204,11 @@ export default function Bolsa() {
         {data && <p className="mt-1 text-[13px] text-ink-soft">{L.generated} {fmtDate(data.generated)}{updated && ` · ${L.updated} ${fmtDate(updated)}`} · {data.offers.length.toLocaleString()} {L.tabs.offers.toLowerCase()} · {data.demands.length.toLocaleString()} {L.tabs.demands.toLowerCase()} · {data.brokers.length} brokers · {data.groups.length} grupos</p>}
       </div>
       <div>
-        <input ref={file} type="file" accept=".json,application/json" className="hidden" onChange={(e) => pick(e.target.files?.[0])} />
-        <button onClick={() => file.current?.click()} disabled={busy} className="btn-primary">{busy ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}{busy ? L.updating : L.update}</button>
+        <input ref={file} type="file" multiple accept=".zip,.txt,.json" className="hidden" onChange={(e) => pick(e.target.files)} />
+        <button onClick={() => file.current?.click()} disabled={busy} className="btn-primary">{busy ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}{busy ? (step === 'build' ? L.building : step === 'save' ? L.updating : L.reading) : L.update}</button>
       </div>
+      <p className="w-full text-[13px] text-ink-soft">{L.hint}</p>
+      {done.length > 0 && <p className="w-full rounded-xl bg-mint-500/10 px-4 py-3 text-[13px] text-mint-600">{L.addedOk} {done.map((d) => `${d.name} (${d.msgs} msgs, ${d.first} → ${d.last}, ${d.isNew ? L.newGroup : L.merged})`).join(' · ')}</p>}
     </div>
   )
   if (!data) return (

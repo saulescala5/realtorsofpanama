@@ -37,8 +37,9 @@ Live: https://realtorsofpanama.vercel.app (Vercel auto-deploys `main`; any other
   002_sample_listings.sql is optional.
 
 ## Admin tools (private)
-- `/admin/bolsa` (`src/pages/admin/Bolsa.tsx`, `src/lib/bolsa.ts`): Bolsa de Brokers. Saul uploads the `data.json` his
-  parser creates; it's gzipped into the private bucket `bolsa` (admin-only RLS). Tabs: offers, requests, matches, brokers,
+- `/admin/bolsa` (`src/pages/admin/Bolsa.tsx`, `src/lib/bolsa.ts`): Bolsa de Brokers. Saul uploads WhatsApp group exports (.zip)
+  (data.json also accepted). `src/lib/bolsaEngine.ts` (his Bolsa engine) builds offers/requests/brokers/matches in the browser.
+  Raw chats (`chats.json.gz`) and the result (`data.json.gz`) live in the private bucket `bolsa` (admin-only RLS). Tabs: offers, requests, matches, brokers,
   zones. "Create listing" pre-fills the listing editor and stores the broker in `property_private` (source code `bolsa:<key>`).
   "Send to client" sends a client-safe text (no broker/source). The client drawer in `/admin/clients` shows matching
   published listings and Bolsa offers.
