@@ -21,6 +21,8 @@ import Listings from './pages/admin/Listings'
 import ListingEditor from './pages/admin/ListingEditor'
 import ImportPackage from './pages/admin/ImportPackage'
 import Leads from './pages/admin/Leads'
+import Bolsa from './pages/admin/Bolsa'
+import Contracts from './pages/admin/Contracts'
 
 const OldLink = () => <Navigate to={`/property/${useParams().id}`} replace />
 
@@ -52,6 +54,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path="listings/import" element={<ImportPackage />} />
               <Route path="listings/:id" element={<ListingEditor />} />
               <Route path="clients" element={<Leads />} />
+              <Route path="bolsa" element={<Bolsa />} />
+              <Route path="contracts" element={<Contracts />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

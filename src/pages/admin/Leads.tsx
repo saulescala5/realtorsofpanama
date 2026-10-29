@@ -6,6 +6,47 @@ import { useStore } from '@/lib/store'
 import { timeAgo } from '@/lib/format'
 import type { Lead, LeadStage } from '@/lib/types'
 import { Avatar, Empty, PageHeader } from '@/components/ui'
+import { useBolsa, offersForLead, clientText, brokerLabel, money as bmoney, waNum } from '@/lib/bolsa'
+import { locationName } from '@/lib/locations'
+
+function Matches({ lead }: { lead: Lead }) {
+  const { lang } = useI18n()
+  const { publicProperties } = useStore()
+  const { data } = useBolsa()
+  const es = lang === 'es'
+  const want = lead.interest === 'rent' ? 'rent' : lead.interest === 'buy' ? 'sale' : null
+  if (!want) return null
+  const areas = (lead.areas ?? '').toLowerCase()
+  const nums = [...String(lead.budget ?? '').toLowerCase().replace(/,/g, '').matchAll(/(\d+(?:\.\d+)?)\s*(k|m)?/g)].map((m) => Number(m[1]) * (m[2] === 'k' ? 1e3 : m[2] === 'm' ? 1e6 : 1))
+  const max = nums.length ? Math.max(...nums) : 0
+  const mine = publicProperties.filter((p) => p.operation === want && (!max || p.price <= max * 1.15) && (!areas || areas.includes(locationName(p.location).toLowerCase()) || areas.includes(p.location.replace(/-/g, ' ')))).slice(0, 5)
+  const bolsa = data ? offersForLead(data, lead, 6) : []
+  const phone = waNum(lead.phone)
+  const site = typeof window !== 'undefined' ? window.location.origin : ''
+  return (
+    <div className="space-y-4">
+      <div>
+        <p className="mb-2 text-sm font-extrabold">{es ? 'De tus propiedades' : 'From your listings'}</p>
+        {mine.length ? <ul className="space-y-1.5">{mine.map((p) => (
+          <li key={p.id} className="flex items-center justify-between gap-3 rounded-2xl bg-canvas px-3 py-2 text-sm">
+            <Link to={`/property/${p.id}`} className="min-w-0 truncate font-semibold hover:underline">{p.title}</Link>
+            {phone && <a href={`https://wa.me/${phone}?text=${encodeURIComponent(`${p.title}\n${site}/property/${p.id}`)}`} target="_blank" rel="noreferrer" className="shrink-0 text-mint-600" aria-label="WhatsApp"><MessageCircle size={16} /></a>}
+          </li>))}</ul> : <p className="text-sm text-ink-mute">{es ? 'Nada publicado que encaje.' : 'Nothing published fits.'}</p>}
+      </div>
+      {data && (
+        <div>
+          <p className="mb-2 text-sm font-extrabold">{es ? 'De la Bolsa (privado)' : 'From the Bolsa (private)'}</p>
+          {bolsa.length ? <ul className="space-y-1.5">{bolsa.map((o) => (
+            <li key={o.key} className="rounded-2xl bg-canvas px-3 py-2 text-sm">
+              <div className="flex items-center justify-between gap-3"><p className="min-w-0 truncate font-semibold">{o.title}</p><p className="shrink-0 font-semibold">{bmoney(o.price)}</p></div>
+              <div className="mt-1 flex items-center justify-between gap-3 text-xs text-ink-soft"><span className="truncate">{brokerLabel(data.brokerBy.get(o.broker))} · {o.last_seen}</span>
+                {phone && <a href={`https://wa.me/${phone}?text=${encodeURIComponent(clientText(o, lead.language === 'en' ? 'en' : 'es'))}`} target="_blank" rel="noreferrer" className="shrink-0 font-semibold text-mint-600">{es ? 'Enviar al cliente' : 'Send to client'}</a>}</div>
+            </li>))}</ul> : <p className="text-sm text-ink-mute">{es ? 'Sin ofertas activas que encajen.' : 'No active offers fit.'}</p>}
+        </div>
+      )}
+    </div>
+  )
+}
 
 const STAGES: LeadStage[] = ['new', 'contacted', 'showing', 'negotiating', 'won', 'lost']
 const DOT: Record<LeadStage, string> = { new: 'bg-brand-400', contacted: 'bg-sky-400', showing: 'bg-sun-500', negotiating: 'bg-violet-500', won: 'bg-mint-500', lost: 'bg-ink-mute' }
@@ -73,6 +114,8 @@ function Drawer({ lead, onClose }: { lead: Lead; onClose: () => void }) {
           {blocks.map(([l, v]) => (
             <div key={l}><p className="mb-1 text-sm font-extrabold">{l}</p><p className="whitespace-pre-line rounded-2xl bg-canvas p-3 text-sm text-ink-soft">{v}</p></div>
           ))}
+          <Matches lead={lead} />
+          <Link to={`/admin/contracts?lead=${lead.id}`} className="btn-ghost w-full">{lang === 'es' ? 'Crear contrato con este cliente' : 'Create a contract with this client'}</Link>
           <div>
             <label className="mb-2 block text-sm font-extrabold">{L.myNotes}</label>
             <textarea className="input h-28 py-3" value={notes} onChange={(e) => setNotes(e.target.value)} onBlur={() => notes !== (lead.myNotes ?? '') && updateLead(lead.id, { myNotes: notes })} />

@@ -32,8 +32,19 @@ Live: https://realtorsofpanama.vercel.app (Vercel auto-deploys `main`; any other
 - Sofia only offers rows with `status = 'active'` and `listing_by` not null. Sample listings have `listing_by` null
   and `is_sample = true`.
 - `property_private` holds listing sources and broker contacts: admin-only, never shown on the site or to Sofia.
-- Migrations run so far: schema.sql, 003_import_lovable_listings.sql (58 live listings). Pending: 004_virtual_tour.sql
-  (needed before saving a 3D tour URL in the editor). 002_sample_listings.sql is optional.
+- Migrations run so far: schema.sql, 003_import_lovable_listings.sql (58 live listings). Pending until Saul confirms:
+  004_virtual_tour.sql (3D tour URL) and 005_admin_tools.sql (private `bolsa` bucket, `contracts`, `admin_settings`).
+  002_sample_listings.sql is optional.
+
+## Admin tools (private)
+- `/admin/bolsa` (`src/pages/admin/Bolsa.tsx`, `src/lib/bolsa.ts`): Bolsa de Brokers. Saul uploads the `data.json` his
+  parser creates; it's gzipped into the private bucket `bolsa` (admin-only RLS). Tabs: offers, requests, matches, brokers,
+  zones. "Create listing" pre-fills the listing editor and stores the broker in `property_private` (source code `bolsa:<key>`).
+  "Send to client" sends a client-safe text (no broker/source). The client drawer in `/admin/clients` shows matching
+  published listings and Bolsa offers.
+- `/admin/contracts` (`src/pages/admin/Contracts.tsx`, `src/lib/contracts.ts`): Saul's contract templates (authorization,
+  lease, promise, sale). Saves to `contracts`; broker profile in `admin_settings.broker_profile`. Prefill with
+  `?property=<id>` or `?lead=<id>`. ID photos are not saved to the database. The file is `@ts-nocheck` (ported JSX).
 
 ## Rules
 - No personal info anywhere public: no personal email, no owner name. Public contact is WhatsApp
@@ -47,6 +58,5 @@ Live: https://realtorsofpanama.vercel.app (Vercel auto-deploys `main`; any other
   (display, condensed) + Inter Tight. Rounded cards (22–32px), soft shadows, no busy motion.
 
 ## Next up
-- Admin: Bolsa de Brokers module (private broker listings database) and contracts module, both admin-only.
 - Domain: point realtorsofpanama.com to Vercel, then update `SITE_URL` fallbacks, sitemap and llms.txt.
 - Consider prerendering public pages for better SEO/LLM crawling.

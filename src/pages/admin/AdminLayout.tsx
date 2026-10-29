@@ -1,5 +1,5 @@
 import { Link, NavLink, Navigate, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutGrid, Building, Users, LogOut, ExternalLink } from 'lucide-react'
+import { LayoutGrid, Building, Users, LogOut, ExternalLink, Database, FileSignature } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { Logo } from '@/components/ui'
@@ -18,6 +18,8 @@ export default function AdminLayout() {
     { to: '/admin', label: n.overview, Icon: LayoutGrid, end: true },
     { to: '/admin/listings', label: n.listings, Icon: Building },
     { to: '/admin/clients', label: n.clients, Icon: Users, badge: fresh },
+    { to: '/admin/bolsa', label: 'Bolsa', Icon: Database },
+    { to: '/admin/contracts', label: t.nav.login === 'Entrar' ? 'Contratos' : 'Contracts', Icon: FileSignature },
   ]
   const linkCls = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-soft hover:bg-canvas hover:text-ink'}`
@@ -55,7 +57,7 @@ export default function AdminLayout() {
 
       <nav className="fixed inset-x-0 bottom-0 z-30 flex justify-around border-t border-line bg-white/95 px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur lg:hidden">
         {[...items, { to: '/', label: n.site, Icon: ExternalLink, end: true, badge: 0 }].map(({ to, label, Icon, end }) => (
-          <NavLink key={to} to={to} end={end} className={({ isActive }) => `flex min-w-[64px] flex-col items-center gap-0.5 rounded-xl px-2 py-1 text-[10px] font-semibold ${isActive ? 'text-brand-600' : 'text-ink-mute'}`}>
+          <NavLink key={to} to={to} end={end} className={({ isActive }) => `flex min-w-[52px] flex-col items-center gap-0.5 rounded-xl px-2 py-1 text-[10px] font-semibold ${isActive ? 'text-brand-600' : 'text-ink-mute'}`}>
             <Icon size={20} /><span>{label}</span>
           </NavLink>
         ))}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Flame, Plus, FolderUp, MessageCircle } from 'lucide-react'
+import { Flame, Plus, FolderUp, MessageCircle, Database, FileSignature, ArrowUpRight } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore } from '@/lib/store'
 import { timeAgo } from '@/lib/format'
@@ -31,6 +31,16 @@ export default function Overview() {
             <p className="mt-2 text-3xl font-extrabold tabular-nums">{c.v}</p>
           </Link>
         ))}
+      </div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <Link to="/admin/bolsa" className="card flex items-center gap-4 p-5 transition hover:shadow-lift">
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-white"><Database size={20} /></span>
+          <span className="min-w-0 flex-1"><span className="block font-extrabold">Bolsa de Brokers</span><span className="block text-sm text-ink-soft">{lang === 'es' ? 'Ofertas, pedidos y matches de tus grupos. Privado.' : 'Offers, requests and matches from your groups. Private.'}</span></span><ArrowUpRight size={18} />
+        </Link>
+        <Link to="/admin/contracts" className="card flex items-center gap-4 p-5 transition hover:shadow-lift">
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-white"><FileSignature size={20} /></span>
+          <span className="min-w-0 flex-1"><span className="block font-extrabold">{lang === 'es' ? 'Contratos' : 'Contracts'}</span><span className="block text-sm text-ink-soft">{lang === 'es' ? 'Autorización, alquiler, promesa y compraventa.' : 'Authorization, lease, promise and sale.'}</span></span><ArrowUpRight size={18} />
+        </Link>
       </div>
       <section className="card mt-6 p-5">
         <h2 className="flex items-center gap-2 font-extrabold"><Flame size={18} className="text-rose-500" />{O.hot}</h2>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowUp, ArrowDown, Trash2, ImagePlus, Loader2, ChevronDown, Wand2, Lock } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useStore, type PropertyInput } from '@/lib/store'
@@ -47,9 +47,10 @@ export default function ListingEditor() {
   const nav = useNavigate()
   const E = t.admin.editor
   const existing = store.properties.find((p) => p.id === id)
-  const [d, setD] = useState<PropertyInput>(existing ?? blank)
+  const pre = (useLocation().state ?? {}) as { prefill?: Partial<PropertyInput>; source?: Partial<PropertySource> }
+  const [d, setD] = useState<PropertyInput>(existing ?? { ...blank, ...pre.prefill })
   const [features, setFeatures] = useState((existing?.features ?? []).join('\n'))
-  const [src, setSrc] = useState<PropertySource>({ propertyId: id ?? '' })
+  const [src, setSrc] = useState<PropertySource>({ propertyId: id ?? '', ...(!id ? pre.source : {}) })
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(0)
@@ -110,8 +111,10 @@ export default function ListingEditor() {
       <button onClick={() => nav(-1)} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-soft hover:text-ink"><ArrowLeft size={16} />{t.common.back}</button>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-[28px]">{existing ? E.editTitle : E.newTitle}</h1>
+        {existing && <button type="button" onClick={() => nav(`/admin/contracts?property=${existing.id}`)} className="btn-ghost btn-sm">{t.nav.login === 'Entrar' ? 'Crear contrato' : 'Create contract'}</button>}
         {!existing && <button type="button" onClick={() => setShowImport(!showImport)} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700"><Wand2 size={15} />{E.importFromLink}</button>}
       </div>
+      {!existing && src.sourceCode?.startsWith('bolsa:') && <p className="mt-4 rounded-xl bg-black/5 px-4 py-3 text-sm">{t.nav.login === 'Entrar' ? 'Rellenada desde la Bolsa. Agrega fotos y descripción; los datos del broker quedan guardados en Fuente (privado).' : 'Filled from the Bolsa. Add photos and a description; the broker details stay in Source (private).'}</p>}
       {error && <p className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-600">{error}</p>}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
