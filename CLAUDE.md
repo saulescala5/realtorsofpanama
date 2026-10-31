@@ -32,9 +32,8 @@ Live: https://realtorsofpanama.vercel.app (Vercel auto-deploys `main`; any other
 - Sofia only offers rows with `status = 'active'` and `listing_by` not null. Sample listings have `listing_by` null
   and `is_sample = true`.
 - `property_private` holds listing sources and broker contacts: admin-only, never shown on the site or to Sofia.
-- Migrations run so far: schema.sql, 003_import_lovable_listings.sql (58 live listings). Pending until Saul confirms:
-  004_virtual_tour.sql (3D tour URL) and 005_admin_tools.sql (private `bolsa` bucket, `contracts`, `admin_settings`).
-  002_sample_listings.sql is optional.
+- Migrations run: schema.sql, 003 (58 listings), 004 (virtual tour), 005 (admin tools). 002 (samples) not run.
+- Edge Functions deployed: bolsa-flyer (secret ANTHROPIC_API_KEY). sofia-lead: deploy pending (see the Sofia chat).
 
 ## Admin tools (private)
 - `/admin/bolsa` (`src/pages/admin/Bolsa.tsx`, `src/lib/bolsa.ts`): Bolsa de Brokers. Saul uploads WhatsApp group exports (.zip)
